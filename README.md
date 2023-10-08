@@ -1,3 +1,3 @@
 # I_TabUi
 
-- 😎 A new tab for your own browser
+- 您自己的浏览器 😎 的新选项卡

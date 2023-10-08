@@ -2,19 +2,23 @@
   "private": true,
   "author": "SenY <ys0514@yeah.net>",
   "scripts": {
-    "build": "max build",
     "dev": "max dev",
+    "build": "max build",
     "format": "prettier --cache --write .",
-    "postinstall": "max setup",
     "prepare": "husky install",
+    "postinstall": "max setup",
     "setup": "max setup",
     "start": "npm run dev"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@ant-design/pro-components": "^2.4.4",
-    "@umijs/max": "^4.0.81",
-    "antd": "^5.4.0"
+    "@umijs/max": "^4.0.83",
+    "antd": "^5.4.0",
+    "axios": "^1.5.1",
+    "lodash": "^4.17.21",
+    "qs": "^6.11.2",
+    "styled-components": "^6.0.8"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",

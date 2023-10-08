@@ -1,34 +1,47 @@
-export interface IRoute {
+import { home } from './home';
+interface IRoute {
   path?: string;
-  wrappers?: string[];
   component?: string;
+  wrappers?: string[];
   redirect?: string;
-  title?: string;
-  unaccessable?: any; //路由访问权限 真值时进行校验
+  accessable?: boolean;
+  name?: string;
   routes?: IRoute[];
-  [key: string]: unknown;
+  [k: string]: unknown;
 }
 
-//修改后需要重新启动(umi编译)
 const routes: IRoute[] = [
   {
     path: '/',
-    component: '@/layouts/index',
+    component: '@/layouts/BasicLayout',
     routes: [
       {
-        path: '',
+        path: '/',
         redirect: '/home',
       },
       {
-        path: 'home',
-        component: '@/pages/Home/index',
-      },
-      {
-        path: '*',
-        component: '/404',
+        name: '主页',
+        path: '/home',
+        component: './Home',
+        routes: [...home],
       },
     ],
   },
 ];
 
-export default routes;
+const formatRoutes = (originRoutes: IRoute[]): IRoute[] => {
+  return originRoutes.map((originRoute) => {
+    const newRoute = { ...originRoute };
+    if (originRoute.actionId)
+      newRoute.wrappers = [
+        ...(newRoute.wrappers || []),
+        // "@/components/Auth/...",
+      ];
+    if (Array.isArray(originRoute.routes)) {
+      newRoute.routes = formatRoutes(originRoute.routes);
+    }
+    return newRoute;
+  });
+};
+
+export default formatRoutes(routes);
