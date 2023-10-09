@@ -4,7 +4,7 @@ interface IRoute {
   component?: string;
   wrappers?: string[];
   redirect?: string;
-  accessable?: boolean;
+  needAuth?: boolean;
   name?: string;
   routes?: IRoute[];
   [k: string]: unknown;
@@ -32,7 +32,7 @@ const routes: IRoute[] = [
 const formatRoutes = (originRoutes: IRoute[]): IRoute[] => {
   return originRoutes.map((originRoute) => {
     const newRoute = { ...originRoute };
-    if (originRoute.actionId)
+    if (originRoute.needAuth)
       newRoute.wrappers = [
         ...(newRoute.wrappers || []),
         // "@/components/Auth/...",

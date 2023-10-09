@@ -3,7 +3,7 @@ import { message } from 'antd';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import errorCatcher, { Response } from './errorCatcher';
 
-//合并AxiosRequestConfig
+//扩展合并 AxiosRequestConfig
 declare module 'axios' {
   export interface AxiosRequestConfig {
     noToken?: boolean;
@@ -17,16 +17,15 @@ const requestInstance = axios.create({
   timeout: 15000,
 });
 
-export const abortControllerList: AbortController[] = [];
-
 requestInstance.interceptors.request.use((requestConfig) => {
   //token
   if (requestConfig.noToken) {
     const itabToken = localStorage.getItem('itabToken');
     if (!itabToken) {
       message.error('请重新登陆');
+    } else {
+      requestConfig.headers.set('itabToken', itabToken);
     }
-    requestConfig.headers.set('itabToken');
   }
 
   return requestConfig;
@@ -36,8 +35,8 @@ requestInstance.interceptors.response.use(
   (response) => {
     const config = response.config;
     const data = response.data as Response;
+    //validate
     if (!config.noValidate) {
-      //validate
       if (data.code === 0 || data.status !== 1)
         errorCatcher(false, response, config.noGlobalMessage);
     }
