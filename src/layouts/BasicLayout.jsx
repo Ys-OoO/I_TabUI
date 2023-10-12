@@ -1,4 +1,4 @@
-import { FlexColumn, FlexRow } from '@/components/FlexBox';
+import { Flex, FlexColumn } from '@/components/FlexBox';
 import { Outlet, useSelector } from '@umijs/max';
 import BasicNavigator from './BasicNavigator';
 
@@ -6,11 +6,11 @@ export default function BasicLayout() {
   const userState = useSelector((state) => state.user);
   return (
     <FlexColumn>
-      <FlexRow>
-        <BasicNavigator />
+      <Flex>
         <Outlet />
-      </FlexRow>
+      </Flex>
       {/* modules */}
+      <BasicNavigator />
     </FlexColumn>
   );
 }
