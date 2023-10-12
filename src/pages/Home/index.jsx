@@ -7,7 +7,7 @@ import style from './style.less';
 const Home = () => {
   return (
     <FlexColumnAuot style={{ marginTop: 24 }}>
-      <FlexColumnCenter style={{ height: 'calc(100vh)' }}>
+      <FlexColumnCenter style={{ height: 'calc(97vh)' }}>
         <Clock />
         <SearchInput className={style.searchContainer} />
       </FlexColumnCenter>
