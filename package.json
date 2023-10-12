@@ -11,7 +11,7 @@
     "start": "npm run dev"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.0.1",
+    "@ant-design/icons": "^5.2.6",
     "@ant-design/pro-components": "^2.4.4",
     "@umijs/max": "^4.0.83",
     "antd": "^5.4.0",
@@ -19,7 +19,9 @@
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
     "qs": "^6.11.2",
-    "styled-components": "^6.0.8"
+    "styled-components": "^6.0.8",
+    "for-editor": "^0.3.5",
+    "react-markdown": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.33",
