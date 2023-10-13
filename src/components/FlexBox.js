@@ -13,7 +13,7 @@ export const FlexColumnCenter = styled(FlexColumn)`
   align-items : center;
 `
 
-export const FlexColumnAuot = styled(FlexColumn)`
+export const FlexColumnAuto = styled(FlexColumn)`
   flex : 1 1 0;
 `
 
