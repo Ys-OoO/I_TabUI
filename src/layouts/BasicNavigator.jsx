@@ -18,10 +18,12 @@ export default function BasicNavigator() {
     {
       icon: <MarkdownIcon />,
       path: '/article',
+      tooltip: '写文章',
     },
     {
       icon: <TodoListIcon />,
       path: '/todos',
+      tooltip: 'Todo List',
     },
     {
       icon: <FavoritesFolderIcon />,
@@ -29,6 +31,7 @@ export default function BasicNavigator() {
         //TODO 弹出收藏夹
       },
       noRoute: true,
+      tooltip: '收藏夹',
     },
   ];
 
@@ -47,7 +50,10 @@ export default function BasicNavigator() {
           key="home"
           onClick={debouncePush('/home', 200)}
           icon={<HomeIcon />}
-          style={{ left: 24, top: 24 }}
+          style={{
+            left: 24,
+            top: 24,
+          }}
         />
         <FloatButton.Group
           trigger="hover"
@@ -60,7 +66,8 @@ export default function BasicNavigator() {
                 icon={navi?.icon}
                 key={index}
                 onClick={navi?.onClick}
-                path={navi.path}
+                path={navi?.path}
+                tooltip={navi?.tooltip}
               />
             );
           })}

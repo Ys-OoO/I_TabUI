@@ -1,4 +1,5 @@
 import { Flex, FlexColumn } from '@/components/FlexBox';
+import IBackground from '@/components/IBackground';
 import { Outlet, useSelector } from '@umijs/max';
 import BasicNavigator from './BasicNavigator';
 
@@ -11,6 +12,7 @@ export default function BasicLayout() {
       </Flex>
       {/* modules */}
       <BasicNavigator />
+      <IBackground />
     </FlexColumn>
   );
 }
