@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import Icon from '@ant-design/icons/lib/components/Icon';
+import { ShrinkOutlined } from '@ant-design/icons';
 import React from 'react';
 
 const FunctionSvg = () => {
@@ -149,5 +150,6 @@ export {
   FavoritesFolderIcon,
   BaiduIcon,
   GithubIcon,
-  HomeIcon
+  HomeIcon,
+  ShrinkOutlined
 }
