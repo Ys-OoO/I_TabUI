@@ -5,7 +5,6 @@ import {
   HomeIcon,
   MarkdownIcon,
   MoreIcon,
-  TodoListIcon,
 } from '@/components/icons';
 import { debouncePush } from '@/utils/common';
 import { FloatButton } from 'antd';
@@ -21,11 +20,6 @@ export default function BasicNavigator() {
       tooltip: '写文章',
     },
     {
-      icon: <TodoListIcon />,
-      path: '/todos',
-      tooltip: 'Todo List',
-    },
-    {
       icon: <FavoritesFolderIcon />,
       onClick: () => {
         //TODO 弹出收藏夹
@@ -38,7 +32,7 @@ export default function BasicNavigator() {
   _.forEach(navigationItems, (navi) => {
     if (!navi.noRoute) {
       navi.onClick = (path) => {
-        debouncePush('/home' + (path || ''), 200)();
+        debouncePush(path || '', 200)();
       };
     }
   });

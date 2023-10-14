@@ -1,4 +1,3 @@
-import { home } from './home';
 interface IRoute {
   path?: string;
   component?: string;
@@ -23,7 +22,11 @@ const routes: IRoute[] = [
         name: '主页',
         path: '/home',
         component: './Home',
-        routes: [...home],
+      },
+      {
+        name: '笔记',
+        path: '/article',
+        component: './Article',
       },
     ],
   },

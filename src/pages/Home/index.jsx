@@ -1,6 +1,5 @@
 import Clock from '@/components/Clock';
 import { FlexColumnAuto, FlexColumnCenter } from '@/components/FlexBox';
-import { Outlet } from '@umijs/max';
 import SearchInput from './SearchInput/SearchInput';
 import style from './style.less';
 
@@ -11,9 +10,6 @@ const Home = () => {
         <Clock />
         <SearchInput className={style.searchContainer} />
       </FlexColumnCenter>
-      {/* TODO下拉 */}
-
-      <Outlet />
     </FlexColumnAuto>
   );
 };
