@@ -1,9 +1,10 @@
 import { BaiduIcon, GithubIcon } from '@/components/icons'
-import { Select, Space, Input } from 'antd'
-import React, { useState } from 'react'
+import { Select, Space, Input,List } from 'antd'
+import React, { useEffect, useState } from 'react'
 import _ from 'lodash';
 import { isRelNull } from '@/utils/common';
-
+import jsonp from 'fetch-jsonp';
+import styles from '../style.less'
 const defaultSearchConfig = [
   {
     value: 'baidu',
@@ -25,6 +26,7 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
   ]
   const [currentSearchSite, setCurrentSearchSite] = useState('baidu');
   const [searchValue, setSearchValue] = useState(null);
+  const [data,setData] = useState(null);
   const onSearch = (value, e, { source }) => {
     if (isRelNull(value) || source === 'clear') {
       return;
@@ -37,9 +39,39 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
       }
     })
   }
-
+   const fetchData = ()=>{
+     if(searchValue&&currentSearchSite==='baidu') {
+      jsonp(`https://www.baidu.com/sugrec?&prod=pc&wd=${searchValue}`)
+       .then((res)=>res.json())
+        .then((d)=>{
+          if(d){
+            const {g} =d;
+            if(g){
+              let dataList = g.map((item)=>{
+                return {
+                  label:item.q,
+                  value:item.sa,
+                }
+             });
+             setData(dataList);
+            }
+          }
+        }) 
+     }else{
+       setData(null);
+     }
+       
+   };
+   const getSearchValue=(e)=>{
+      const content =e.target.innerText;
+      setSearchValue(content);
+   }
+   useEffect(()=>{
+      fetchData();
+   },[searchValue]);
   return (
-    <Space.Compact size='large' {...props}>
+    <div className={styles.container}>
+        <Space.Compact size='large' {...props}>
       <Select
         defaultValue="baidu"
         options={searchConfig}
@@ -55,5 +87,21 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
         onChange={(e) => { setSearchValue(e.target.value) }}
         {...inputProps} />
     </Space.Compact>
+       <div>
+       {data&&<List
+            bordered
+            dataSource={data}
+            renderItem={(item) => (
+            <List.Item>
+                <a onClick={getSearchValue} style={{color:'black'}}>
+                 {item.label}
+                </a>
+            </List.Item>
+          )}
+        />}
+       </div>
+    </div>
+  
+
   )
 }
