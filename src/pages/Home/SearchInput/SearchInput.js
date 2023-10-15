@@ -40,8 +40,20 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
 
   return (
     <Space.Compact size='large' {...props}>
-      <Select defaultValue="baidu" options={searchConfig} value={currentSearchSite} onChange={(value) => { setCurrentSearchSite(value) }} {...selectProps} />
-      <Input.Search placeholder='输入搜索内容' allowClear onSearch={onSearch} value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} {...inputProps} />
+      <Select
+        defaultValue="baidu"
+        options={searchConfig}
+        value={currentSearchSite}
+        onChange={(value) => { setCurrentSearchSite(value) }}
+        {...selectProps}
+      />
+      <Input.Search
+        placeholder='输入搜索内容'
+        allowClear
+        onSearch={onSearch}
+        value={searchValue}
+        onChange={(e) => { setSearchValue(e.target.value) }}
+        {...inputProps} />
     </Space.Compact>
   )
 }
