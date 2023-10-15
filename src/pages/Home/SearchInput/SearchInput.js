@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import _ from 'lodash';
 import { isRelNull } from '@/utils/common';
 import jsonp from 'fetch-jsonp';
-import styles from '../style.less'
+import style from '../style.less'
 const defaultSearchConfig = [
   {
     value: 'baidu',
@@ -70,7 +70,7 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
       fetchData();
    },[searchValue]);
   return (
-    <div className={styles.container}>
+    <div className={style.container}>
         <Space.Compact size='large' {...props}>
       <Select
         defaultValue="baidu"
@@ -87,7 +87,7 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
         onChange={(e) => { setSearchValue(e.target.value) }}
         {...inputProps} />
     </Space.Compact>
-       <div>
+       <div className={style.listContent}>
        {data&&<List
             bordered
             dataSource={data}
