@@ -93,7 +93,7 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
             dataSource={data}
             renderItem={(item) => (
             <List.Item>
-                <a onClick={getSearchValue} style={{color:'black'}}>
+                <a onClick={getSearchValue} style={{color:'#ffff'}}>
                  {item.label}
                 </a>
             </List.Item>

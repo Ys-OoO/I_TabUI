@@ -1,7 +1,7 @@
 import MdEditor from 'for-editor';
-import {Modal } from 'antd';
 import React, { useState } from "react";
-const AddArticle = ({open,onOk,onCancel})=>{
+import styles from '../styles.less'
+const AddArticle = ()=>{
    // 工具栏菜单
    const toolbar = {
     h1: true, // h1
@@ -37,11 +37,12 @@ const AddArticle = ({open,onOk,onCancel})=>{
     console.log('handleEditorSave', value);
   }
    return (
-   
-    <Modal open={open} onOk={onOk} onCancel={onCancel}>
-      <MdEditor placeholder="请输入Markdown文本" height={600} lineNum={false}
-      toolbar={toolbar} value={mdContent} onChange={handleEditorChange} onSave={handleEditorSave} addImg={uploadImg} />
-    </Modal>
+      <div className={styles.mainBox}>
+          <MdEditor placeholder="请输入文章内容" height={600} lineNum={false}
+          toolbar={toolbar} value={mdContent} onChange={handleEditorChange} onSave={handleEditorSave} addImg={uploadImg} />
+      </div>
+     
+
    );
 }
 export default AddArticle;
