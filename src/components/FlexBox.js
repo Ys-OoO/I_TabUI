@@ -36,3 +36,7 @@ export const FlexCenterAuto = styled(FlexCenter)`
 export const FlexAuto = styled(Flex)`
   flex : 1 1 0;
 `
+
+export const Title = styled.div`
+  font-size: 16px;
+`

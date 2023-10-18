@@ -32,3 +32,23 @@ export const debouncePush = (path, duration) => {
     history.push(path);
   }, duration);
 }
+
+/**
+ * @param {*} value 转换的字符串
+ * @param {*} errorValue 转换异常时返回的数据
+ */
+export const JSONParse = (value, errorValue = {}, noConsole) => {
+  if (errorValue === false) {
+    return errorValue;
+  }
+  if (typeof value !== 'string') return value || errorValue;
+  if (isRelNull(value)) return errorValue;
+  let jsonData = errorValue;
+  try {
+    jsonData = JSON.parse(value);
+  } catch (e) {
+    if (!noConsole) window.console.warn(`JSON 转换异常 请查看配置JSON格式[${value}]${e}`);
+    jsonData = errorValue;
+  }
+  return jsonData;
+};
