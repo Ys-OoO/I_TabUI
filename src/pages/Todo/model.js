@@ -1,10 +1,11 @@
-import { getStorage } from '../../utils/localStorageUtils';
+import { getStorage, setStorage } from '../../utils/localStorageUtils';
 
 
 export default {
   namespace: 'todo',
   state: {
     todoList: [],
+    order: 0
   },
   effects: {
     *change({ config }, { put }) {
@@ -13,12 +14,28 @@ export default {
         config
       });
     },
-    *refreshLocalTodoList({ config }, { put }) {
-      const todoList = getStorage('todolist', 'array')
-
+    *refresh({ config }, { put }) {
+      const todoList = getStorage('todolist', 'array');
+      const order = getStorage('order', 'number');
+      yield put({
+        type: 'save',
+        config: { todoList, order }
+      })
+    },
+    *saveLocalTodoList({ config }, { put }) {
+      const { todoList } = config;
+      setStorage('todolist', todoList, 'array');
       yield put({
         type: 'save',
         config: { todoList }
+      })
+    },
+    *saveLocalOrder({ config }, { put }) {
+      const { order } = config;
+      setStorage('order', order);
+      yield put({
+        type: 'save',
+        config: { order }
       })
     }
   },
