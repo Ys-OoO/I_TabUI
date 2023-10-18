@@ -31,7 +31,7 @@ const routes: IRoute[] = [
       {
         name: '新建笔记',
         path: '/addArticle/:articleId',
-        component: '@/pages/Article/AddArticle',
+        component: '@/pages/Article/ArticleEditor',
       },
     ],
   },

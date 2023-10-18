@@ -20,6 +20,7 @@ const AddArticle = () => {
   // 数据保存
   const [mdContent, setMdContent] = useState('');
   const [htmlContent, setHtmlContent] = useState(<></>);
+
   // markdown-it 利用设置参数，具体查询markdown-it官网
   const mdParser = new MarkdownIt({
     html: true,
@@ -43,17 +44,20 @@ const AddArticle = () => {
       );
     },
   }).enable('image');
+
   // 检测markdown数据变化
   function handleEditorChange({ html, text }) {
     setMdContent(text);
     setHtmlContent(html);
   }
+
   const onFinish = () => {
     const formList = form.getFieldsValue();
     const list = { ...formList, mdContent };
     //发请求（分为编辑文章接口和新增文章接口）
     console.log(list);
   };
+
   return (
     <div className={styles.mainBox}>
       <Card>

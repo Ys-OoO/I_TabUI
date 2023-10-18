@@ -1,5 +1,5 @@
 import { Card, Space, Spin } from 'antd';
-import MyCard from './MyCard';
+import DisplayCard from './DisplayCard';
 import style from './style.less';
 const ArticleList = ({ articleList }) => {
   return (
@@ -10,7 +10,9 @@ const ArticleList = ({ articleList }) => {
             <Space wrap={true}>
               {articleList &&
                 articleList.map((article) => {
-                  return <MyCard key={article.articleId} article={article} />;
+                  return (
+                    <DisplayCard key={article.articleId} article={article} />
+                  );
                 })}
             </Space>
           </div>

@@ -3,7 +3,7 @@ import { Link } from '@umijs/max';
 import { Button, Image, Space } from 'antd';
 import { useState } from 'react';
 import style from './style.less';
-const MyCard = ({ article }) => {
+const DisplayCard = ({ article }) => {
   const { articleId } = article;
   const [isHovered, setIsHovered] = useState(false);
   const handleMouseEnter = () => {
@@ -48,4 +48,4 @@ const MyCard = ({ article }) => {
     </div>
   );
 };
-export default MyCard;
+export default DisplayCard;
