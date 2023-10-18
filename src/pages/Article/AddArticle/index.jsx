@@ -57,7 +57,7 @@ const AddArticle = () => {
   return (
     <div className={styles.mainBox}>
       <Card>
-        <div className={style.MdHeaderBox}>
+        <div className={style.markdownHeaderBox}>
           <span style={{ fontSize: '25px', color: 'black' }}>
             {articleId !== 'null' ? '编辑' : '新建'}文章
           </span>
