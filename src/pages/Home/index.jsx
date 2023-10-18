@@ -11,7 +11,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch({
-      type: 'todo/refreshLocalTodoList',
+      type: 'todo/refresh',
     });
   }, []);
 
