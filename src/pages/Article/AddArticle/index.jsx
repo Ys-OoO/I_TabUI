@@ -1,39 +1,54 @@
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import 'react-markdown-editor-lite/lib/index.css';
 import styles from '../styles.less';
-import style from './style.less'
+import style from './style.less';
 import {Button, Form, Input,Card,Tooltip} from 'antd';
 import {
   SafetyCertificateFilled
 } from '@ant-design/icons';
 // 导入编辑器的样式，不导入会出现毫无样式情况
-import 'react-markdown-editor-lite/lib/index.css';
 import { useLocation} from '@umijs/max';
+// 引入 highlight.js 和语法样式
+import hljs from 'highlight.js';
+import 'highlight.js/styles/default.css'; // 根据需要选择语法样式
 const AddArticle = ()=>{
       const location = useLocation();
       const parts = location.pathname.split('=');
       let  articleId =parts[parts.length - 1];
       const [form] = Form.useForm();
       const [formData,setFormData] =useState(null);
-
       // 数据保存
       const [mdContent, setMdContent] = useState("");
+      const [htmlContent, setHtmlContent] = useState(<></>);
       // markdown-it 利用设置参数，具体查询markdown-it官网
       const mdParser = new MarkdownIt({
         html: true,
-        linkify: false,
-        typographer: true
+        linkify: true,
+        typographer: true,
+        langPrefix:   'language-',
+        highlight: function (str, lang) {
+          if (lang && hljs.getLanguage(lang)) {
+            try {
+              return '<pre class="hljs"><code>' +
+                     hljs.highlight(lang, str, true).value +
+                     '</code></pre>';
+            } catch (__) {}
+          }
+          return '<pre class="hljs"><code>' + mdParser.utils.escapeHtml(str) + '</code></pre>';
+        },
           }).enable('image');
       // 检测markdown数据变化
       function handleEditorChange({html, text}) {
-        setMdContent(text)
-        console.log('handleEditorChange', html, text);
+        setMdContent(text);
+        setHtmlContent(html);
       };
       const onFinish = () => {
         const formList = form.getFieldsValue();
         const list ={...formList, mdContent};
         //发请求（分为编辑文章接口和新增文章接口）
+        console.log(list);
       };
       return (
           <div className={styles.mainBox}>
@@ -82,6 +97,9 @@ const AddArticle = ()=>{
                     style={
                       {height: 400}
                     }
+                    placeholder='输入markDown内容'
+                    shortcuts
+                    readOnly={articleId!=='null'?true:false}
                     onImageUpload={
                       async (file) => {
                         const formData = new FormData()
@@ -101,7 +119,7 @@ const AddArticle = ()=>{
                    >
                 </MdEditor>
              </Card>
-            
+  
           </div>
         )
 }
