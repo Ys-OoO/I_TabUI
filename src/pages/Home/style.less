@@ -12,10 +12,22 @@
   right: 4px;
 }
 
-.listContent{
-  position: absolute;
-  top:190px;
-  left: 780px;
-  width: 300px;
-  overflow: hidden;
+.dropDownContainer{
+  width: fit-content;
+  margin: 0 auto;
+
+  .listContent{
+    float: left;
+    z-index: 99;
+    margin-top: 12px;
+    border-radius: 10px;
+    width: 300px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 60%);
+
+    .selectedItem:hover{
+      color: "#fff";
+    }
+  }
 }
+

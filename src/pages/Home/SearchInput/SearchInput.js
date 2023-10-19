@@ -1,10 +1,11 @@
-import { BaiduIcon, GithubIcon } from '@/components/icons'
-import { Select, Space, Input, List } from 'antd'
-import React, { useEffect, useState } from 'react'
-import _ from 'lodash';
+import { FlexColumnCenter } from '@/components/FlexBox';
+import { BaiduIcon, GithubIcon } from '@/components/icons';
 import { isRelNull } from '@/utils/common';
+import { Input, List, Select, Space } from 'antd';
 import jsonp from 'fetch-jsonp';
-import style from '../style.less'
+import _ from 'lodash';
+import { useEffect, useState } from 'react';
+import style from '../style.less';
 const defaultSearchConfig = [
   {
     value: 'baidu',
@@ -27,6 +28,7 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
   const [currentSearchSite, setCurrentSearchSite] = useState('baidu');
   const [searchValue, setSearchValue] = useState(null);
   const [data, setData] = useState(null);
+
   const onSearch = (value, e, { source }) => {
     if (isRelNull(value) || source === 'clear') {
       return;
@@ -65,16 +67,18 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
 
   };
 
-  const getSearchValue = (e) => {
+  const windoSearch = (e) => {
+    e.preventDefault();
     const content = e.target.innerText;
-    setSearchValue(content);
+    onSearch(content, e, { source: 'click' });
   }
+
   useEffect(() => {
     fetchData();
   }, [searchValue]);
 
   return (
-    <div className={style.container}>
+    <FlexColumnCenter className={style.searchContainer}>
       <Space.Compact size='large' {...props}>
         <Select
           defaultValue="baidu"
@@ -91,21 +95,21 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
           onChange={(e) => { setSearchValue(e.target.value) }}
           {...inputProps} />
       </Space.Compact>
-      <div className={style.listContent}>
-        {data && <List
-          bordered
-          dataSource={data}
-          renderItem={(item) => (
-            <List.Item>
-              <a onClick={getSearchValue} style={{ color: '#ffff' }}>
-                {item.label}
-              </a>
-            </List.Item>
-          )}
-        />}
+      <div className={style.dropDownContainer}>
+        <div className={style.listContent}>
+          {data && <List
+            bordered
+            dataSource={data}
+            renderItem={(item) => (
+              <List.Item >
+                <a onClick={windoSearch} target='_blank' className={style.selectedItem} style={{ width: '100%', color: '#333' }}>
+                  {item.label}
+                </a>
+              </List.Item>
+            )}
+          />}
+        </div>
       </div>
-    </div>
-
-
+    </FlexColumnCenter>
   )
 }

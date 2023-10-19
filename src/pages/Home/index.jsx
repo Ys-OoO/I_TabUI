@@ -16,7 +16,7 @@ const Home = () => {
   }, []);
 
   return (
-    <FlexColumnAuto style={{ marginTop: 24 }}>
+    <FlexColumnAuto style={{ marginTop: 24, overflow: 'hidden' }}>
       <FlexColumnCenter style={{ height: 'calc(100vh)' }}>
         <Clock />
         <SearchInput className={style.searchContainer} />
