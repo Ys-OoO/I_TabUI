@@ -5,7 +5,8 @@ export default {
   namespace: 'todo',
   state: {
     todoList: [],
-    order: 0
+    order: 0,
+    visible: false
   },
   effects: {
     *change({ config }, { put }) {

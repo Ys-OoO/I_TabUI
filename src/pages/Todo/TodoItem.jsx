@@ -1,9 +1,22 @@
 import { FlexAuto, FlexColumn, FlexRowAuto } from '@/components/FlexBox';
+import { DoneIcon, TodoOrDoingIcon } from '@/components/icons';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from '@umijs/max';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import style from './style.less';
+
+const getIcon = (status) => {
+  switch (status) {
+    case 'todo':
+    case 'doing':
+      return <TodoOrDoingIcon />;
+    case 'done':
+      return <DoneIcon />;
+    default:
+      return <></>;
+  }
+};
 
 export default function TodoItem({ todo, innerRef, ...props }) {
   const dispatch = useDispatch();
@@ -29,8 +42,11 @@ export default function TodoItem({ todo, innerRef, ...props }) {
         <FlexAuto />
         <div className={style.time}>{dayjs(time).format('MM月DD日 HH:mm')}</div>
       </FlexColumn>
-      <div className={style.actions} onClick={deleteTodo}>
-        <DeleteTwoTone key="delete" />
+      <div className={style.left}>
+        <div className={style.status}>{getIcon(todo.status)}</div>
+        <div className={style.actions}>
+          <DeleteTwoTone key="delete" onClick={deleteTodo} />
+        </div>
       </div>
     </FlexRowAuto>
   );

@@ -1,6 +1,7 @@
 import Clock from '@/components/Clock';
 import { FlexColumnAuto, FlexColumnCenter } from '@/components/FlexBox';
 import { useDispatch } from '@umijs/max';
+import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import TodoList from '../Todo/TodoList';
 import SearchInput from './SearchInput/SearchInput';
@@ -21,9 +22,14 @@ const Home = () => {
         <Clock />
         <SearchInput className={style.searchContainer} />
       </FlexColumnCenter>
-      <div className={style.todoBox}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1 }}
+        className={style.todoBox}
+      >
         <TodoList />
-      </div>
+      </motion.div>
     </FlexColumnAuto>
   );
 };
