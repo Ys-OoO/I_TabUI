@@ -6,17 +6,21 @@ import {
   Title,
 } from '@/components/FlexBox';
 import IFloatButton from '@/components/IFloatButton';
-import { EmptyIcon, ShrinkOutlined, TodoListIcon } from '@/components/icons';
+import {
+  DeleteDoneIcon,
+  EmptyIcon,
+  ShrinkOutlined,
+  TodoListIcon,
+} from '@/components/icons';
 import { isBlank } from '@/utils/common';
-import { getStorage, setStorage } from '@/utils/localStorageUtils';
-import { PlusSquareTwoTone } from '@ant-design/icons';
+import { FullscreenOutlined, PlusSquareTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from '@umijs/max';
-import { Button, Card, message } from 'antd';
-import dayjs from 'dayjs';
+import { Button, Card, Tooltip, message } from 'antd';
+import { motion } from 'framer-motion';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { v4 as uuidv4 } from 'uuid';
+import AddTodoDrawer from './AddTodoDrawer';
 import TodoItem from './TodoItem';
 import style from './style.less';
 
@@ -52,27 +56,11 @@ const reorder = (todoList, source, destination, isSameDrop) => {
   });
 };
 
-//拖拽重新排序（不同区域）
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-
-  return result;
-};
-
 export default function Todo() {
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [expanded, setExpanded] = useState(false);
-  const { todoList } = useSelector((state) => state.todo);
-  const order = useSelector((state) => parseInt(state.todo.order));
+  const [expanded, setExpanded] = useState(true);
+  const { todoList, order } = useSelector((state) => state.todo);
 
   const sortedTodoList = _.sortBy(todoList, (o) => o.order);
   let todoStatusMap = _.groupBy(sortedTodoList, 'status');
@@ -103,23 +91,14 @@ export default function Todo() {
     }
   }, [windowWidth]);
 
-  const addTodo = (content) => {
-    if (isBlank(content)) {
-      return;
-    }
-    const todo = {
-      id: uuidv4(),
-      content,
-      status: 'todo',
-      time: dayjs(),
-      order: order,
-    };
-    dispatch({
-      type: 'todo/saveLocalOrder',
-      config: { order: order + 1 },
+  const deleteDone = (e) => {
+    const filterTodos = _.filter(todoList, (todo) => {
+      return todo.status !== 'done';
     });
-    let todolist = getStorage('todolist', 'array');
-    setStorage('todolist', [...todolist, todo], 'array');
+    dispatch({
+      type: 'todo/saveLocalTodoList',
+      config: { todoList: filterTodos },
+    });
   };
 
   const onDragEnd = (result) => {
@@ -127,8 +106,8 @@ export default function Todo() {
     if (!destination) {
       return;
     }
-    const { droppableId: sId, index: sOrder } = source;
-    const { droppableId: dId, index: dOrder } = destination;
+    const { droppableId: sId } = source;
+    const { droppableId: dId } = destination;
     let newTodoList = [];
     //拖拽source 和 destination 同源
     if (!isBlank(sId) && !isBlank(dId) && sId === dId) {
@@ -143,107 +122,135 @@ export default function Todo() {
       config: { todoList: newTodoList },
     });
   };
+
   return (
     <>
       {expanded ? (
-        <Card
-          title={
-            <FlexRowAuto>
-              <FlexCenter>
-                <TodoListIcon style={{ marginRight: 12 }} />
-                <span>Todo List</span>
-                <FlexAuto />
-              </FlexCenter>
-            </FlexRowAuto>
-          }
-          extra={
-            <Button
-              icon={<ShrinkOutlined />}
-              style={{ border: 0, marginLeft: 12 }}
-              onClick={() => {
-                setExpanded(false);
-              }}
-            ></Button>
-          }
-          hoverable={true}
-          actions={[
-            <PlusSquareTwoTone
-              key="add"
-              onClick={() => {
-                addTodo('b');
-                dispatch({ type: 'todo/refresh' });
-              }}
-            />,
-          ]}
-          bodyStyle={{ display: 'flex' }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          transition={{ duration: 0.6 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          key="expandedTodoList"
         >
-          <FlexRowAuto>
-            <DragDropContext onDragEnd={onDragEnd}>
-              {_.map(todoStatusGroup, (item, key) => {
-                return (
-                  <FlexColumn key={key} style={{ flex: 1 }}>
-                    <Title className={style.title} style={getTitleStyle(key)}>
-                      {_.upperCase(key)}
-                    </Title>
-                    <Droppable droppableId={key} key={key}>
-                      {(droppableProvided) => (
-                        <div
-                          ref={droppableProvided.innerRef}
-                          {...droppableProvided.droppableProps}
-                          className={style.list}
-                        >
-                          {todoStatusGroup[key].length ? (
-                            _.map(todoStatusGroup[key], (item) => {
-                              return (
-                                <Draggable
-                                  draggableId={item.id}
-                                  index={item.order}
-                                  key={item.id}
-                                >
-                                  {(draggableProvided) => (
-                                    <TodoItem
-                                      todo={item}
-                                      innerRef={draggableProvided.innerRef}
-                                      {...draggableProvided.draggableProps}
-                                      {...draggableProvided.dragHandleProps}
-                                    />
-                                  )}
-                                </Draggable>
-                              );
-                            })
-                          ) : (
-                            <div
-                              style={{
-                                fontSize: 40,
-                                textAlign: 'center',
-                                paddingTop: 40,
-                              }}
-                            >
-                              <EmptyIcon />
-                            </div>
-                          )}
-                          {droppableProvided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </FlexColumn>
-                );
-              })}
-            </DragDropContext>
-          </FlexRowAuto>
-        </Card>
-      ) : (
-        <IFloatButton
-          onClick={() => {
-            if (windowWidth <= 1080) {
-              message.info('浏览器视窗过小，请调整');
-              return;
+          <Card
+            title={
+              <FlexRowAuto>
+                <FlexCenter>
+                  <TodoListIcon style={{ marginRight: 12 }} />
+                  <span>Todo List</span>
+                  <FlexAuto />
+                </FlexCenter>
+              </FlexRowAuto>
             }
-            setExpanded(true);
-          }}
-          icon={<TodoListIcon />}
-          style={{ top: 16, right: 24 }}
-        />
+            extra={
+              <>
+                <Button
+                  icon={<FullscreenOutlined />}
+                  style={{ border: 0, marginLeft: 12 }}
+                  onClick={() => {
+                    //TODO
+                  }}
+                ></Button>
+                <Button
+                  icon={<ShrinkOutlined />}
+                  style={{ border: 0, marginLeft: 12 }}
+                  onClick={() => {
+                    setExpanded(false);
+                  }}
+                ></Button>
+              </>
+            }
+            hoverable={true}
+            actions={[
+              <PlusSquareTwoTone
+                key="add"
+                onClick={() => {
+                  dispatch({ type: 'todo/save', config: { visible: true } });
+                  dispatch({ type: 'todo/refresh' });
+                }}
+              />,
+              <Tooltip key="deleteDone" title="清空已完成">
+                <DeleteDoneIcon onClick={deleteDone} />
+              </Tooltip>,
+            ]}
+            bodyStyle={{ display: 'flex' }}
+          >
+            <FlexRowAuto>
+              <DragDropContext onDragEnd={onDragEnd}>
+                {_.map(todoStatusGroup, (item, key) => {
+                  return (
+                    <FlexColumn key={key} style={{ flex: 1 }}>
+                      <Title className={style.title} style={getTitleStyle(key)}>
+                        {_.upperCase(key)}
+                      </Title>
+                      <Droppable droppableId={key} key={key}>
+                        {(droppableProvided) => (
+                          <div
+                            ref={droppableProvided.innerRef}
+                            {...droppableProvided.droppableProps}
+                            className={style.list}
+                          >
+                            {todoStatusGroup[key].length ? (
+                              _.map(todoStatusGroup[key], (item) => {
+                                return (
+                                  <Draggable
+                                    draggableId={item.id}
+                                    index={item.order}
+                                    key={item.id}
+                                  >
+                                    {(draggableProvided) => (
+                                      <TodoItem
+                                        todo={item}
+                                        innerRef={draggableProvided.innerRef}
+                                        {...draggableProvided.draggableProps}
+                                        {...draggableProvided.dragHandleProps}
+                                      />
+                                    )}
+                                  </Draggable>
+                                );
+                              })
+                            ) : (
+                              <div
+                                style={{
+                                  fontSize: 40,
+                                  textAlign: 'center',
+                                  paddingTop: 40,
+                                }}
+                              >
+                                <EmptyIcon />
+                              </div>
+                            )}
+                            {droppableProvided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </FlexColumn>
+                  );
+                })}
+              </DragDropContext>
+            </FlexRowAuto>
+            <AddTodoDrawer />
+          </Card>
+        </motion.div>
+      ) : (
+        <motion.div
+          key="unexpandedTodoList"
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.6 }}
+          whileInView={{ opacity: 1 }}
+        >
+          <IFloatButton
+            onClick={() => {
+              if (windowWidth <= 1080) {
+                message.info('浏览器视窗过小，请调整');
+                return;
+              }
+              setExpanded(true);
+            }}
+            icon={<TodoListIcon />}
+            style={{ top: 16, right: 24 }}
+          />
+        </motion.div>
       )}
     </>
   );

@@ -34,13 +34,33 @@
     }
   }
 
-  .actions{
-    cursor: pointer;
+  .left{
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     margin-left: 8px;
     padding: 4px;
-    background-color: #eee;
+
+    .status{
+      flex:0.3;
+    }
+
+    .actions{
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      background-color: #eee;
+      flex: 0.7;
+    }
+
+    .actions:hover{
+      background-color: #fff;
+    }
+
   }
 
+}
+
+.drawerMask{
+  border-radius: 8px;
 }

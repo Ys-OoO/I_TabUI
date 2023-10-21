@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unknown-property */
-import Icon from '@ant-design/icons/lib/components/Icon';
 import { ShrinkOutlined } from '@ant-design/icons';
-import React from 'react';
+import Icon from '@ant-design/icons/lib/components/Icon';
 
 const FunctionSvg = () => {
   return (
@@ -146,6 +145,56 @@ const EmptySvg = (props) => {
   )
 }
 
+const DoneSvg = (props) => {
+  return (
+    <svg
+      className="icon"
+      viewBox="0 0 1024 1024"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+    >
+      <path d="M0 512C0 229.248 229.248 0 512 0s512 229.248 512 512-229.248 512-512 512S0 794.752 0 512z" fill="#1afa29" p-id="1425"></path>
+      <path d="M512 192c176.768 0 320 143.232 320 320S688.768 832 512 832 192 688.768 192 512s143.232-320 320-320z" fill="#FFFFFF" p-id="1426"></path>
+      <path d="M691.968 436.864a34.944 34.944 0 0 0-46.08-17.92c-2.944 1.28-5.632 2.944-8.192 4.992L488.576 546.56c-13.184 10.88-32.256 10.624-45.184-0.64l-53.632-46.464a42.2784 42.2784 0 0 0-63.872 10.24c-9.856 16.512-7.296 37.632 6.272 51.328l108.8 109.568a34.9952 34.9952 0 0 0 49.536 0.128l0.128-0.128 194.048-195.072c10.24-10.112 13.056-25.472 7.296-38.656" fill="#1afa29" p-id="1427"></path>
+    </svg>
+  )
+}
+
+const DeleteDoneSvg = (props) => {
+  return (
+    <svg
+      className="icon"
+      viewBox="0 0 1024 1024"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+    >
+      <path d="M630.5 959.6h-244c-55.9 0-101.3-45.4-101.3-101.3S330.6 757 386.5 757h244c55.9 0 101.3 45.4 101.2 101.4 0 55.8-45.3 101.1-101.2 101.2z" fill="#1afa29" p-id="1242"></path>
+      <path d="M908.5 161.4H725.4V85.2c0-16.8-13.6-30.5-30.5-30.5H329.1c-16.8 0-30.5 13.6-30.5 30.5v76.2h-183c-16.8 0-30.5 13.7-30.5 30.5s13.7 30.5 30.5 30.5h32.2L222 888c5.2 46.3 44.3 81.3 90.9 81.3h398.3c46.6 0 85.7-35 90.9-81.3l74.2-665.6h32.1c16.8 0 30.5-13.7 30.5-30.5s-13.6-30.5-30.4-30.5z m-548.9-45.7h304.9v45.7H359.6v-45.7z m381.9 765.5c-1.7 15.4-14.8 27.1-30.3 27.1H312.8c-15.5 0-28.6-11.7-30.3-27.1L209 222.4h606l-73.5 658.8z" fill="#424242" p-id="1243"></path>
+      <path d="M711.2 976.3H312.9c-50.2 0-92.3-37.6-97.8-87.5l-73.6-659.3h-25.9c-20.7 0-37.5-16.8-37.5-37.5s16.8-37.5 37.5-37.5h176.1V85.2c0-20.7 16.8-37.5 37.5-37.5H695c20.7 0 37.5 16.8 37.5 37.5v69.2h176.1c20.7 0 37.5 16.8 37.5 37.5s-16.8 37.5-37.5 37.5h-25.9L809 888.8c-5.6 49.9-47.6 87.5-97.8 87.5zM115.5 168.4c-13 0-23.5 10.5-23.5 23.5s10.5 23.5 23.5 23.5H154l75 671.8c4.8 42.8 40.9 75.1 83.9 75.1h398.3c43.1 0 79.2-32.3 83.9-75.1L870 215.4h38.4c13 0 23.5-10.5 23.5-23.5 0-12.6-9.9-22.9-22.3-23.5H718.4V85.2c0-12.9-10.5-23.5-23.5-23.5H329.1c-12.9 0-23.5 10.5-23.5 23.5v83.2H115.5z m595.7 746.9H312.8c-19.1 0-35.1-14.3-37.2-33.3l-74.3-666.6h621.6L748.5 882c-2.2 19-18.2 33.3-37.3 33.3z m-398.4-14h398.4c12 0 22-9 23.3-20.9l72.6-651H216.9l72.6 651c1.3 11.9 11.3 20.9 23.3 20.9z m358.6-732.9H352.6v-59.7h318.8v59.7z m-304.8-14h290.8v-31.7H366.6v31.7z" fill="#424242" p-id="1244"></path><path d="M603.5 806.3c16.8 0 30.5-13.6 30.5-30.4V328.2c0-16.8-13.7-30.5-30.5-30.5S573 311.4 573 328.2v447.6c0 16.9 13.6 30.5 30.5 30.5z m-167.7 0c16.8 0 30.5-13.6 30.5-30.5V328.2c0-16.8-13.7-30.5-30.5-30.5s-30.5 13.7-30.5 30.5v447.6c0 16.9 13.6 30.5 30.5 30.5z" fill="#424242" p-id="1245"></path>
+    </svg>
+  )
+}
+
+const TodoOrDoingSvg = (props) => {
+  return (
+    <svg
+      className="icon"
+      viewBox="0 0 1024 1024"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+    >
+      <path d="M512 989.866667C248.490667 989.866667 34.133333 775.509333 34.133333 512S248.490667 34.133333 512 34.133333s477.866667 214.357333 477.866667 477.866667-214.357333 477.866667-477.866667 477.866667z m0-904.533334C276.650667 85.333333 85.333333 276.821333 85.333333 512s191.317333 426.666667 426.666667 426.666667 426.666667-191.317333 426.666667-426.666667S747.349333 85.333333 512 85.333333z" fill="#333333" p-id="1394"></path>
+      <path d="M711.68 623.786667c-2.048 0-4.096-0.170667-6.314667-0.682667l-199.68-50.176c-11.434667-2.901333-19.285333-13.141333-19.285333-24.917333v-196.266667c0-14.165333 11.434667-25.6 25.6-25.6s25.6 11.434667 25.6 25.6v176.298667l180.394667 45.397333c13.653333 3.413333 22.016 17.408 18.602666 31.061333-2.901333 11.605333-13.482667 19.285333-24.917333 19.285334z" fill="#333333" p-id="1395"></path>
+      <path d="M512 512m-313.002667 0a313.002667 313.002667 0 1 0 626.005334 0 313.002667 313.002667 0 1 0-626.005334 0Z" fill="#333333" opacity=".3" p-id="1396"></path></svg>
+  )
+}
+
 const FunctionIcon = (props) => <Icon component={FunctionSvg} {...props} />
 const MoreIcon = (props) => <Icon component={MoreSvg} {...props} />
 const MarkdownIcon = (props) => <Icon component={MarkdownSvg} {...props} />
@@ -155,19 +204,28 @@ const BaiduIcon = (props) => <Icon component={BaiduSvg} {...props} />
 const GithubIcon = (props) => <Icon component={GithubSvg} {...props} />
 const HomeIcon = (props) => <Icon component={HomeSvg} {...props} />
 const EmptyIcon = (props) => <Icon component={EmptySvg} {...props} />
+const DoneIcon = (props) => <Icon component={DoneSvg} {...props} />
+const DeleteDoneIcon = (props) => <Icon component={DeleteDoneSvg} {...props} />
+const TodoOrDoingIcon = (props) => <Icon component={TodoOrDoingSvg} {...props} />
+
+
 
 
 
 
 export {
-  FunctionIcon,
-  MoreIcon,
-  MarkdownIcon,
-  TodoListIcon,
-  FavoritesFolderIcon,
   BaiduIcon,
+  DeleteDoneIcon,
+  DoneIcon,
+  EmptyIcon,
+  FavoritesFolderIcon,
+  FunctionIcon,
   GithubIcon,
   HomeIcon,
+  MarkdownIcon,
+  MoreIcon,
   ShrinkOutlined,
-  EmptyIcon
-}
+  TodoListIcon,
+  TodoOrDoingIcon
+};
+
