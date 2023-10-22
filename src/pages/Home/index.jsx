@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import TodoList from '../Todo/TodoList';
 import SearchInput from './SearchInput/SearchInput';
 import style from './style.less';
+import Module from '@/pages/Module';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const Home = () => {
       >
         <TodoList />
       </motion.div>
+      <Module/>
     </FlexColumnAuto>
   );
 };
