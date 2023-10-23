@@ -10,12 +10,29 @@
   min-height: 40%;
 }
 
+.todoBox{
+  width: 35%;
+  position: fixed;
+  top: 4px;
+  right: 4px;
+}
+
+.fullScreenBox{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
 .todoItem{
-  margin: 4px 0;
+  margin: 8px 0;
   border: 2px  solid #61a3ff;
   overflow: hidden;
   box-shadow: 0 0 5px rgba(0, 0, 0, 50%);
   height:95px;
+  position: relative;
 
   .todoLeft{
     flex:1;
@@ -24,7 +41,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       margin-left: 4px;
-      font-weight: bold;
+      font-weight: 600;
       font-size: 14px;
     }
     
@@ -59,8 +76,60 @@
 
   }
 
+  .doneStamp{
+    position: absolute;
+    bottom: 4px;
+    left: 8px;
+  }
 }
 
 .drawerMask{
   border-radius: 8px;
+}
+
+.card{
+  background-color: #fff;
+  border-radius: 8px;
+
+  .cardHeader{
+    display: flex;
+    height: 40px;
+    font-weight:bolder;
+
+    .left{
+      margin-left: 16px;
+      margin-top: 4px;
+    }
+  
+    .right{
+      margin-right: 16px;
+      margin-top: 4px;
+    }
+  }
+  
+  .cardBody{
+    padding: 24px;
+    max-height: 800px;
+    min-height: 300px;
+    // TODO 滚动
+    overflow: hidden;
+  }
+
+  .cardBodyFull{
+    height: calc(100% - 80px);
+  }
+
+  .footer{
+    .todoAction{
+      border-top: 2px solid #f0f0f0;
+      padding-top: 8px;
+      height: 40px;
+    }
+  }
+}
+
+:global{
+  .ant-drawer-content-wrapper{
+    box-shadow: none !important;
+  }
 }

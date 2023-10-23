@@ -1,10 +1,3 @@
-import {
-  FlexAuto,
-  FlexCenter,
-  FlexColumn,
-  FlexRowAuto,
-  Title,
-} from '@/components/FlexBox';
 import IFloatButton from '@/components/IFloatButton';
 import {
   DeleteDoneIcon,
@@ -12,11 +5,19 @@ import {
   ShrinkOutlined,
   TodoListIcon,
 } from '@/components/icons';
+import {
+  FlexAuto,
+  FlexCenter,
+  FlexColumn,
+  FlexColumnAuto,
+  FlexRowAuto,
+  MotionBox,
+  Title,
+} from '@/components/styleBox';
 import { isBlank } from '@/utils/common';
 import { FullscreenOutlined, PlusSquareTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from '@umijs/max';
-import { Button, Card, Tooltip, message } from 'antd';
-import { motion } from 'framer-motion';
+import { Button, Divider, Tooltip, message } from 'antd';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -59,8 +60,9 @@ const reorder = (todoList, source, destination, isSameDrop) => {
 export default function Todo() {
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [expanded, setExpanded] = useState(true);
-  const { todoList, order } = useSelector((state) => state.todo);
+  const [expanded, setExpanded] = useState(false);
+  const [fullScreen, setFullScreen] = useState(false);
+  const { todoList } = useSelector((state) => state.todo);
 
   const sortedTodoList = _.sortBy(todoList, (o) => o.order);
   let todoStatusMap = _.groupBy(sortedTodoList, 'status');
@@ -86,7 +88,7 @@ export default function Todo() {
   }, []);
 
   useEffect(() => {
-    if (expanded && windowWidth <= 1080) {
+    if (expanded && windowWidth <= 1400) {
       setExpanded(false);
     }
   }, [windowWidth]);
@@ -124,56 +126,48 @@ export default function Todo() {
   };
 
   return (
-    <>
+    <MotionBox
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 1 }}
+      className={fullScreen ? style.fullScreenBox : style.todoBox}
+    >
       {expanded ? (
-        <motion.div
+        <MotionBox
           initial={{ opacity: 0, scale: 0.5 }}
           transition={{ duration: 0.6 }}
           whileInView={{ opacity: 1, scale: 1 }}
           key="expandedTodoList"
+          className={style.card}
+          style={fullScreen ? { height: '100%' } : {}}
         >
-          <Card
-            title={
-              <FlexRowAuto>
-                <FlexCenter>
-                  <TodoListIcon style={{ marginRight: 12 }} />
-                  <span>Todo List</span>
-                  <FlexAuto />
-                </FlexCenter>
-              </FlexRowAuto>
-            }
-            extra={
-              <>
-                <Button
-                  icon={<FullscreenOutlined />}
-                  style={{ border: 0, marginLeft: 12 }}
-                  onClick={() => {
-                    //TODO
-                  }}
-                ></Button>
-                <Button
-                  icon={<ShrinkOutlined />}
-                  style={{ border: 0, marginLeft: 12 }}
-                  onClick={() => {
-                    setExpanded(false);
-                  }}
-                ></Button>
-              </>
-            }
-            hoverable={true}
-            actions={[
-              <PlusSquareTwoTone
-                key="add"
+          <div className={style.cardHeader}>
+            <FlexRowAuto className={style.left}>
+              <FlexCenter>
+                <TodoListIcon style={{ marginRight: 12 }} />
+                <span>Todo List</span>
+                <FlexAuto />
+              </FlexCenter>
+            </FlexRowAuto>
+            <div className={style.right}>
+              <Button
+                icon={<FullscreenOutlined />}
+                style={{ border: 0, marginLeft: 12 }}
                 onClick={() => {
-                  dispatch({ type: 'todo/save', config: { visible: true } });
-                  dispatch({ type: 'todo/refresh' });
+                  setFullScreen(!fullScreen);
                 }}
-              />,
-              <Tooltip key="deleteDone" title="清空已完成">
-                <DeleteDoneIcon onClick={deleteDone} />
-              </Tooltip>,
-            ]}
-            bodyStyle={{ display: 'flex' }}
+              ></Button>
+              <Button
+                icon={<ShrinkOutlined />}
+                style={{ border: 0, marginLeft: 12 }}
+                onClick={() => {
+                  setExpanded(false);
+                }}
+              ></Button>
+            </div>
+          </div>
+          <FlexColumnAuto
+            className={fullScreen ? style.cardBodyFull : style.cardBody}
           >
             <FlexRowAuto>
               <DragDropContext onDragEnd={onDragEnd}>
@@ -229,11 +223,30 @@ export default function Todo() {
                 })}
               </DragDropContext>
             </FlexRowAuto>
-            <AddTodoDrawer />
-          </Card>
-        </motion.div>
+          </FlexColumnAuto>
+          <FlexRowAuto className={style.footer}>
+            <PlusSquareTwoTone
+              key="add"
+              onClick={() => {
+                dispatch({ type: 'todo/save', config: { visible: true } });
+                dispatch({ type: 'todo/refresh' });
+              }}
+              style={{ flex: 1, justifyContent: 'center' }}
+              className={style.todoAction}
+            />
+            <Divider type="vertical" />
+            <Tooltip key="deleteDone" title="清空已完成">
+              <DeleteDoneIcon
+                onClick={deleteDone}
+                style={{ flex: 1, justifyContent: 'center' }}
+                className={style.todoAction}
+              />
+            </Tooltip>
+          </FlexRowAuto>
+          <AddTodoDrawer />
+        </MotionBox>
       ) : (
-        <motion.div
+        <MotionBox
           key="unexpandedTodoList"
           initial={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
@@ -241,7 +254,7 @@ export default function Todo() {
         >
           <IFloatButton
             onClick={() => {
-              if (windowWidth <= 1080) {
+              if (windowWidth <= 1400) {
                 message.info('浏览器视窗过小，请调整');
                 return;
               }
@@ -250,8 +263,8 @@ export default function Todo() {
             icon={<TodoListIcon />}
             style={{ top: 16, right: 24 }}
           />
-        </motion.div>
+        </MotionBox>
       )}
-    </>
+    </MotionBox>
   );
 }

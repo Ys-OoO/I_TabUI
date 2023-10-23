@@ -1,5 +1,5 @@
-import { Flex, FlexColumn } from '@/components/FlexBox';
 import IBackground from '@/components/IBackground';
+import { Flex, FlexColumn } from '@/components/styleBox';
 import { Outlet, useSelector } from '@umijs/max';
 import BasicNavigator from './BasicNavigator';
 

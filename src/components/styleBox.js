@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 export const Flex = styled.div`
@@ -38,4 +39,7 @@ export const FlexAuto = styled(Flex)`
 
 export const Title = styled.div`
   font-size: 16px;
+`
+
+export const MotionBox = styled(motion.div)`
 `

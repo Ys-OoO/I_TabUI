@@ -3,7 +3,8 @@ import { isBlank } from '@/utils/common';
 import { useDispatch, useSelector } from '@umijs/max';
 import { Button, Drawer, Input } from 'antd';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import _ from 'lodash';
+import { useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import style from './style.less';
 
@@ -11,12 +12,13 @@ export default function AddTodoDrawer() {
   const dispatch = useDispatch();
   const { visible, order, todoList } = useSelector((state) => state.todo);
   const [content, setContent] = useState("");
+  const inputRef = useRef();
 
   const closeDrawer = (e) => {
     dispatch({ type: 'todo/save', config: { visible: false } });
   }
 
-  const addTodo = (e) => {
+  const addTodo = _.debounce((e) => {
     if (isBlank(String(content.trim()))) {
       console.log('1');
       return;
@@ -41,7 +43,7 @@ export default function AddTodoDrawer() {
     });
     setContent("");
     closeDrawer(e);
-  };
+  }, 300);
 
   const onKeyDown = (e) => {
     if (e.code === "Enter") {
@@ -56,6 +58,12 @@ export default function AddTodoDrawer() {
       getContainer={false}
       maskClassName={style.drawerMask}
       footer={<Button onClick={addTodo}>确定</Button>}
+      style={{ height: 190 }}
+      destroyOnClose={true}
+      autoFocus={true}
+      afterOpenChange={() => {
+        inputRef && inputRef?.current.focus();
+      }}
     >
       <Input
         size="large"
@@ -64,6 +72,7 @@ export default function AddTodoDrawer() {
         value={content}
         onChange={(e) => { setContent(e.target.value) }}
         onKeyDown={onKeyDown}
+        ref={inputRef}
       />
     </Drawer>
   )
