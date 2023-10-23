@@ -1,5 +1,5 @@
-import { FlexColumnCenter } from '@/components/FlexBox';
 import { BaiduIcon, GithubIcon } from '@/components/icons';
+import { FlexColumnCenter } from '@/components/styleBox';
 import { isRelNull } from '@/utils/common';
 import { Input, List, Select, Space } from 'antd';
 import jsonp from 'fetch-jsonp';
