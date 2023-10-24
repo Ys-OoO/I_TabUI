@@ -1,0 +1,41 @@
+@property --direc {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.cardBackground{
+    --direc:0deg;
+
+    width: 250px;
+    height: 350px;
+    background-image: linear-gradient(var(--direc),#5ddcff,#3c67e3,43%,#4e00c2);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: rotate 4s linear infinite;
+    margin:24px;
+    color: aliceblue;
+    cursor: pointer;
+    transition: 0.3s;
+    transform: perspective(500px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+    
+    @keyframes rotate {
+        to{
+            --direc:360deg;
+        }
+    }
+
+    .moduleCard{
+        width: 230px;
+        height: 330px;
+        background-color: #191c29;
+        border-radius: 8px;
+        text-align: center;
+    }
+}
+
+.cardBackground:hover{
+    box-shadow: -3px -3px 10px #fff 3px;
+}

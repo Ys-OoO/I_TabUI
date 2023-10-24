@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import style from './style.less';
-import dayjs from 'dayjs';
 import { isBlank } from '@/utils/common';
-import { FlexColumnCenter } from '../FlexBox';
+import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
+import { FlexColumnCenter } from '../styleBox';
+import style from './style.less';
 
-export default function Clock() {
+export default function Clock({ ...props }) {
   const [time, setTime] = useState(dayjs());
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function Clock() {
   }, [])
 
   return (
-    <FlexColumnCenter className={style.clockBox}>
+    <FlexColumnCenter className={style.clockBox} {...props}>
       <div className={style.clock}>{time.format("HH:mm")}</div>
       <div className={style.date}>{time.format("YYYY-MM-DD")}</div>
     </FlexColumnCenter>

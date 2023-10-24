@@ -1,9 +1,28 @@
-import { FlexAuto, FlexColumn, FlexRowAuto } from '@/components/FlexBox';
+import {
+  DoingIcon,
+  DoneIcon,
+  DoneStampIcon,
+  TodoIcon,
+} from '@/components/icons';
+import { FlexAuto, FlexColumn, FlexRowAuto } from '@/components/styleBox';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from '@umijs/max';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import style from './style.less';
+
+const getIcon = (status) => {
+  switch (status) {
+    case 'todo':
+      return <TodoIcon />;
+    case 'doing':
+      return <DoingIcon />;
+    case 'done':
+      return <DoneIcon />;
+    default:
+      return <></>;
+  }
+};
 
 export default function TodoItem({ todo, innerRef, ...props }) {
   const dispatch = useDispatch();
@@ -22,6 +41,7 @@ export default function TodoItem({ todo, innerRef, ...props }) {
       config: { todoList: newTodoList },
     });
   };
+
   return (
     <FlexRowAuto ref={innerRef} {...props} className={style.todoItem}>
       <FlexColumn style={{ width: '70%' }} className={style.todoLeft}>
@@ -29,9 +49,17 @@ export default function TodoItem({ todo, innerRef, ...props }) {
         <FlexAuto />
         <div className={style.time}>{dayjs(time).format('MM月DD日 HH:mm')}</div>
       </FlexColumn>
-      <div className={style.actions} onClick={deleteTodo}>
-        <DeleteTwoTone key="delete" />
+      <div className={style.left}>
+        <div className={style.status}>{getIcon(todo.status)}</div>
+        <div className={style.actions}>
+          <DeleteTwoTone key="delete" onClick={deleteTodo} />
+        </div>
       </div>
+      {todo.status === 'done' ? (
+        <div className={style.doneStamp}>
+          <DoneStampIcon />
+        </div>
+      ) : undefined}
     </FlexRowAuto>
   );
 }
