@@ -1,13 +1,12 @@
 import { Card, Space, Spin } from 'antd';
 import DisplayCard from './DisplayCard';
-import style from './style.less';
 const ArticleList = ({ articleList }) => {
   return (
     <div>
-      {articleList ? (
-        <Card style={{ height: '68vh', margin: '10px' }}>
-          <div className={style.listBox}>
-            <Space wrap={true}>
+      {articleList.length > 0 ? (
+        <Card style={{ margin: '10px' }}>
+          <div>
+            <Space wrap={true} style={{ paddingLeft: '17px' }}>
               {articleList &&
                 articleList.map((article) => {
                   return (
@@ -22,7 +21,7 @@ const ArticleList = ({ articleList }) => {
           <Spin
             tip="加载中..."
             size="large"
-            style={{ position: 'relative', top: '100px' }}
+            style={{ position: 'absolute', top: '100px' }}
           >
             &nbsp;
           </Spin>

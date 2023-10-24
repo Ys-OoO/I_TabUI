@@ -1,7 +1,8 @@
 import { SafetyCertificateFilled } from '@ant-design/icons';
+import { useDispatch, useSelector } from '@umijs/max';
 import { Button, Card, Form, Input, Tooltip } from 'antd';
 import MarkdownIt from 'markdown-it';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import styles from '../styles.less';
@@ -13,8 +14,11 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/default.css'; // 根据需要选择语法样式
 const AddArticle = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { article } = useSelector((state) => state.article); //新建文章时不需要
+  console.log(article);
   const parts = location.pathname.split('=');
-  let articleId = parts[parts.length - 1];
+  let type = parts[parts.length - 1];
   const [form] = Form.useForm();
   const [formData, setFormData] = useState(null);
   // 数据保存
@@ -50,20 +54,29 @@ const AddArticle = () => {
     setMdContent(text);
     setHtmlContent(html);
   }
-
   const onFinish = () => {
     const formList = form.getFieldsValue();
     const list = { ...formList, mdContent };
     //发请求（分为编辑文章接口和新增文章接口）
-    console.log(list);
   };
-
+  function preDeal() {
+    console.log(article);
+    if (type !== '0') {
+      const { articleType, articleDescribe, articleMdContent, articleId } =
+        article;
+      setMdContent(article.articleMdContent);
+      form.setFieldsValue({ articleType, articleDescribe });
+    }
+  }
+  useEffect(() => {
+    preDeal();
+  }, []);
   return (
     <div className={styles.mainBox}>
       <Card>
         <div className={style.markdownHeaderBox}>
           <span style={{ fontSize: '25px', color: 'black' }}>
-            {articleId !== 'null' ? '编辑' : '新建'}文章
+            {type === '1' ? '编辑' : '新建'}文章
           </span>
 
           <Tooltip title="保存文章">
@@ -82,22 +95,21 @@ const AddArticle = () => {
           }}
           onFinish={onFinish}
           autoComplete="off"
-          disabled={articleId !== 'null' ? true : false}
           form={form}
         >
           <Form.Item
-            label="标题"
-            name="articleTitle"
+            label="类别"
+            name="articleType"
             rules={[
               {
                 required: true,
-                message: '请输入文章标题',
+                message: '请输入文章类别',
               },
             ]}
           >
             <Input />
           </Form.Item>
-          <Form.Item label="&nbsp;&nbsp;描述" name="articleDescription">
+          <Form.Item label="&nbsp;&nbsp;描述" name="articleDescribe">
             <Input.TextArea allowClear autoSize={{ minRows: 2 }} />
           </Form.Item>
         </Form>
@@ -108,7 +120,6 @@ const AddArticle = () => {
           style={{ height: 400 }}
           placeholder="输入markDown内容"
           shortcuts
-          readOnly={articleId !== 'null' ? true : false}
           onImageUpload={async (file) => {
             const formData = new FormData();
             formData.append('files', file);

@@ -4,7 +4,7 @@ import {
   DesktopOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
-import { Link } from '@umijs/max';
+import { Link, useDispatch, useSelector } from '@umijs/max';
 import {
   Button,
   Card,
@@ -33,7 +33,9 @@ const getItem = (label, key, icon, children, type) => {
 const Article = () => {
   const [form] = Form.useForm();
   const [clientReady, setClientReady] = useState(false);
-  const [articleList, setArticleList] = useState(null);
+  // const [articleList, setArticleList] = useState(null);
+  const dispatch = useDispatch();
+  const { articleList } = useSelector((state) => state.article);
   const items = [
     getItem('前端', '1', <PieChartOutlined />),
     getItem('后端', '2', <DesktopOutlined />),
@@ -45,19 +47,19 @@ const Article = () => {
     const data = [
       {
         articleId: 1,
-        articleTypeL: '前端',
+        articleType: '前端',
         articleTitle: 'js箭头函数介绍',
         articleDescription: '箭头函数this指向问题',
       },
       {
         articleId: 2,
-        articleTypeL: '前端',
+        articleType: '前端',
         articleTitle: 'js箭头函数介绍',
         articleDescription: '箭头函数this指向问题',
       },
       {
         articleId: 3,
-        articleTypeL: '前端',
+        articleType: '前端',
         articleTitle: 'js箭头函数介绍',
         articleDescription: '箭头函数this指向问题',
       },
@@ -74,7 +76,10 @@ const Article = () => {
         articleDescription: '箭头函数this指向问题',
       },
     ];
-    setArticleList(data);
+    dispatch({
+      type: 'article/refreshArticleList',
+      config: { articleList: data },
+    });
   };
   const onFinish = (values) => {
     console.log('Finish:', values);
@@ -171,7 +176,7 @@ const Article = () => {
         >
           <Card className={styles.headerCard}>
             <Button className={styles.noteButton}>
-              <Link to={`/addArticle/articleId=${null}`} target="_blank">
+              <Link to={`/addArticle/type=0`} target="_blank">
                 新建文章
               </Link>
             </Button>
