@@ -76,9 +76,7 @@ const Article = () => {
     ];
     setArticleList(data);
   };
-  const onFinish = (values) => {
-    console.log('Finish:', values);
-  };
+  const onFinish = (values) => {};
   // To disable submit button at the beginning.
   useEffect(() => {
     setClientReady(true);

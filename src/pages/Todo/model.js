@@ -4,8 +4,7 @@ import { getStorage, setStorage } from '../../utils/localStorageUtils';
 export default {
   namespace: 'todo',
   state: {
-    todoList: [],
-    order: 0,
+    todoGroup: { todo: [], doing: [], done: [] },
     visible: false
   },
   effects: {
@@ -15,30 +14,22 @@ export default {
         config
       });
     },
-    *refresh({ config }, { put }) {
-      const todoList = getStorage('todolist', 'array');
-      const order = getStorage('order', 'number');
+    *refresh(_, { put }) {
+      const todoGroup = getStorage('todoGroup', 'object');
       yield put({
         type: 'save',
-        config: { todoList, order }
+        config: { todoGroup }
       })
     },
-    *saveLocalTodoList({ config }, { put }) {
-      const { todoList } = config;
-      setStorage('todolist', todoList, 'array');
+    *saveLocalTodos({ config }, { put, select }) {
+      const { todoGroup } = yield select((state) => state.todo);
+      const { todoGroup: groupTemp } = config;
+      setStorage('todoGroup', { ...todoGroup, ...groupTemp }, 'object');
       yield put({
         type: 'save',
-        config: { todoList }
+        config: { todoGroup: { ...todoGroup, ...groupTemp } }
       })
     },
-    *saveLocalOrder({ config }, { put }) {
-      const { order } = config;
-      setStorage('order', order);
-      yield put({
-        type: 'save',
-        config: { order }
-      })
-    }
   },
   reducers: {
     save(state, { config }) {

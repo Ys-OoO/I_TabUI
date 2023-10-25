@@ -25,8 +25,6 @@ import AddTodoDrawer from './AddTodoDrawer';
 import TodoItem from './TodoItem';
 import style from './style.less';
 
-const defaultListOrder = ['todo', 'doing', 'done'];
-
 const getTitleStyle = (key) => {
   if (key === 'todo') {
     return { marginLeft: 0 };
@@ -39,22 +37,28 @@ const getTitleStyle = (key) => {
   }
 };
 
-const reorder = (todoList, source, destination, isSameDrop) => {
+const reorder = (sourceList, source, destination) => {
+  const result = Array.from(sourceList);
   const { index: sourceOrder } = source;
   const { index: destOrder } = destination;
-  return _.forEach(todoList, (todo) => {
-    if (todo.order === sourceOrder) {
-      if (!isSameDrop) {
-        todo.status = destination.droppableId;
-      }
-      todo.order = destOrder;
-      return;
-    }
-    if (todo.order === destOrder) {
-      todo.order = sourceOrder;
-      return;
-    }
-  });
+  //先把自己从todoList摘出来
+  const [removed] = result.splice(sourceOrder, 1);
+  //插入到destOrder
+  result.splice(destOrder, 0, removed);
+  return result;
+};
+
+const move = (listGroup, source, destination) => {
+  //获取被移动元素所在List
+  const sourceTodoList = listGroup[source.droppableId];
+  const [removed] = sourceTodoList.splice(source.index, 1);
+
+  //获取目标区域
+  const destTodoList = listGroup[destination.droppableId];
+  removed.status = destination.droppableId;
+  destTodoList.splice(destination.index, 0, removed);
+
+  return [sourceTodoList, destTodoList];
 };
 
 export default function Todo() {
@@ -62,18 +66,12 @@ export default function Todo() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [expanded, setExpanded] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
-  const { todoList } = useSelector((state) => state.todo);
-
-  const sortedTodoList = _.sortBy(todoList, (o) => o.order);
-  let todoStatusMap = _.groupBy(sortedTodoList, 'status');
-  let todoStatusGroup = { todo: [], doing: [], done: [] };
-  if (!isBlank(todoStatusMap)) {
-    defaultListOrder.forEach((key) => {
-      if (todoStatusMap.hasOwnProperty(key)) {
-        todoStatusGroup[key] = todoStatusMap[key];
-      }
-    });
-  }
+  const { todoGroup } = useSelector((state) => state.todo);
+  const groupTemp = {
+    todo: [...(todoGroup['todo'] || [])],
+    doing: [...(todoGroup['doing'] || [])],
+    done: [...(todoGroup['done'] || [])],
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -93,13 +91,16 @@ export default function Todo() {
     }
   }, [windowWidth]);
 
+  useEffect(() => {
+    if (fullScreen) {
+      window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+    }
+  }, [fullScreen]);
+
   const deleteDone = (e) => {
-    const filterTodos = _.filter(todoList, (todo) => {
-      return todo.status !== 'done';
-    });
     dispatch({
-      type: 'todo/saveLocalTodoList',
-      config: { todoList: filterTodos },
+      type: 'todo/saveLocalTodos',
+      config: { todoGroup: { done: [] } },
     });
   };
 
@@ -110,19 +111,22 @@ export default function Todo() {
     }
     const { droppableId: sId } = source;
     const { droppableId: dId } = destination;
-    let newTodoList = [];
     //拖拽source 和 destination 同源
     if (!isBlank(sId) && !isBlank(dId) && sId === dId) {
-      newTodoList = reorder(todoList, source, destination, true);
+      const newTodoList = reorder(groupTemp[sId], source, destination);
+      dispatch({
+        type: 'todo/saveLocalTodos',
+        config: { todoGroup: { [sId]: newTodoList } },
+      });
     }
     //拖拽source 和 destination 非同源
     if (!isBlank(sId) && !isBlank(dId) && sId !== dId) {
-      newTodoList = reorder(todoList, source, destination, false);
+      const [sourceList, destList] = move(groupTemp, source, destination);
+      dispatch({
+        type: 'todo/saveLocalTodos',
+        config: { todoGroup: { [sId]: sourceList, [dId]: destList } },
+      });
     }
-    dispatch({
-      type: 'todo/saveLocalTodoList',
-      config: { todoList: newTodoList },
-    });
   };
 
   return (
@@ -171,9 +175,19 @@ export default function Todo() {
           >
             <FlexRowAuto>
               <DragDropContext onDragEnd={onDragEnd}>
-                {_.map(todoStatusGroup, (item, key) => {
+                {_.map(groupTemp, (value, key) => {
                   return (
-                    <FlexColumn key={key} style={{ flex: 1 }}>
+                    <FlexColumn
+                      key={key}
+                      style={
+                        fullScreen
+                          ? { maxHeight: window.innerHeight - 80 }
+                          : { maxHeight: 800 }
+                      }
+                      className={
+                        fullScreen ? style.singleListFull : style.singleList
+                      }
+                    >
                       <Title className={style.title} style={getTitleStyle(key)}>
                         {_.upperCase(key)}
                       </Title>
@@ -184,12 +198,12 @@ export default function Todo() {
                             {...droppableProvided.droppableProps}
                             className={style.list}
                           >
-                            {todoStatusGroup[key].length ? (
-                              _.map(todoStatusGroup[key], (item) => {
+                            {value.length ? (
+                              _.map(value, (item, index) => {
                                 return (
                                   <Draggable
                                     draggableId={item.id}
-                                    index={item.order}
+                                    index={index}
                                     key={item.id}
                                   >
                                     {(draggableProvided) => (
@@ -246,24 +260,17 @@ export default function Todo() {
           <AddTodoDrawer />
         </MotionBox>
       ) : (
-        <MotionBox
-          key="unexpandedTodoList"
-          initial={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
-          whileInView={{ opacity: 1 }}
-        >
-          <IFloatButton
-            onClick={() => {
-              if (windowWidth <= 1400) {
-                message.info('浏览器视窗过小，请调整');
-                return;
-              }
-              setExpanded(true);
-            }}
-            icon={<TodoListIcon />}
-            style={{ top: 16, right: 24 }}
-          />
-        </MotionBox>
+        <IFloatButton
+          onClick={() => {
+            if (windowWidth <= 1400) {
+              message.info('浏览器视窗过小，请调整');
+              return;
+            }
+            setExpanded(true);
+          }}
+          icon={<TodoListIcon />}
+          style={{ top: 16, right: 24 }}
+        />
       )}
     </MotionBox>
   );

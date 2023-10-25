@@ -1,7 +1,7 @@
 import { TodoListIcon } from '@/components/icons';
-import { isBlank } from '@/utils/common';
 import { useDispatch, useSelector } from '@umijs/max';
 import { Button, Drawer, Input } from 'antd';
+import { message } from 'antd/lib';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { useRef, useState } from 'react';
@@ -10,7 +10,7 @@ import style from './style.less';
 
 export default function AddTodoDrawer() {
   const dispatch = useDispatch();
-  const { visible, order, todoList } = useSelector((state) => state.todo);
+  const { visible, todoGroup } = useSelector((state) => state.todo);
   const [content, setContent] = useState("");
   const inputRef = useRef();
 
@@ -19,27 +19,20 @@ export default function AddTodoDrawer() {
   }
 
   const addTodo = _.debounce((e) => {
-    if (isBlank(String(content.trim()))) {
-      console.log('1');
+    if (content === '' || content.trim() === '') {
+      message.warning("内容为空！")
       return;
     }
-    console.log(String(content), isBlank(content));
 
     const todo = {
       id: uuidv4(),
       content: content.trim(),
       status: 'todo',
       time: dayjs(),
-      order: order,
     };
-
     dispatch({
-      type: 'todo/saveLocalOrder',
-      config: { order: order + 1 },
-    });
-    dispatch({
-      type: 'todo/saveLocalTodoList',
-      config: { todoList: [...todoList, todo] },
+      type: 'todo/saveLocalTodos',
+      config: { todoGroup: { todo: [...todoGroup['todo'] || [], todo] } },
     });
     setContent("");
     closeDrawer(e);
