@@ -130,12 +130,7 @@ export default function Todo() {
   };
 
   return (
-    <MotionBox
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1 }}
-      className={fullScreen ? style.fullScreenBox : style.todoBox}
-    >
+    <MotionBox className={fullScreen ? style.fullScreenBox : style.todoBox}>
       {expanded ? (
         <MotionBox
           initial={{ opacity: 0, scale: 0.5 }}
@@ -182,7 +177,7 @@ export default function Todo() {
                       style={
                         fullScreen
                           ? { maxHeight: window.innerHeight - 80 }
-                          : { maxHeight: 800 }
+                          : { maxHeight: 700 }
                       }
                       className={
                         fullScreen ? style.singleListFull : style.singleList
