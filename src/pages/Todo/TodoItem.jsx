@@ -27,18 +27,16 @@ const getIcon = (status) => {
 export default function TodoItem({ todo, innerRef, ...props }) {
   const dispatch = useDispatch();
   const { content = '-', time = dayjs().format('MM月DD日 HH:mm') } = todo;
-  const { todoList } = useSelector((state) => state.todo);
+  const { todoGroup } = useSelector((state) => state.todo);
 
   const deleteTodo = () => {
-    const newTodoList = _.filter(todoList, (t) => {
-      if (t.id === todo.id) {
-        return false;
-      }
-      return true;
-    });
+    const { status } = todo;
+    const newTodoList = todoGroup[status];
+    const index = _.findIndex(newTodoList, { id: todo.id });
+    newTodoList.splice(index, 1);
     dispatch({
-      type: 'todo/saveLocalTodoList',
-      config: { todoList: newTodoList },
+      type: 'todo/saveLocalTodos',
+      config: { todoGroup: { [status]: newTodoList } },
     });
   };
 

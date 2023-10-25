@@ -6,8 +6,7 @@
 
 .list{
   margin-right: 4px;
-  max-height: 60%;
-  min-height: 40%;
+  overflow: auto;
 }
 
 .todoBox{
@@ -111,12 +110,22 @@
     padding: 24px;
     max-height: 800px;
     min-height: 300px;
-    // TODO 滚动
     overflow: hidden;
+
+    .singleList{
+      flex: 1;
+      padding-bottom: 24;
+    }
   }
 
   .cardBodyFull{
     height: calc(100% - 80px);
+
+    .singleListFull{
+      flex: 1;
+      padding-bottom: 24;
+    }
+
   }
 
   .footer{

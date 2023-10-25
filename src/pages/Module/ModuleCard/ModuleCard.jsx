@@ -3,7 +3,6 @@ import style from './style.less';
 
 const defalutCardInfo = {
   desc: '持续开发中...🤗',
-  borderColor: '',
 };
 
 function getRotateDegree(mousePosition, cardLength) {
@@ -13,7 +12,8 @@ function getRotateDegree(mousePosition, cardLength) {
 
 export default function ModuleCard({
   cardInfo = defalutCardInfo,
-  keyProp = 'default',
+  borderColor,
+  keyProp, //必穿，通过此作为mousemove事件添加元素的标识
   ...props
 }) {
   useEffect(() => {
@@ -44,6 +44,11 @@ export default function ModuleCard({
       className={style.cardBackground}
       {...props}
       id={`card_${keyProp}`}
+      style={{
+        backgroundImage:
+          borderColor ||
+          'linear-gradient(var(--direc),#5ddcff,#3c67e3,43%,#4e00c2)',
+      }}
       key={keyProp}
     >
       <div className={style.moduleCard}>

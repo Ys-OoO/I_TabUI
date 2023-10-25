@@ -55,7 +55,6 @@ const AddArticle = () => {
     const formList = form.getFieldsValue();
     const list = { ...formList, mdContent };
     //发请求（分为编辑文章接口和新增文章接口）
-    console.log(list);
   };
 
   return (
