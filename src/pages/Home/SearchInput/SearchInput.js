@@ -4,8 +4,9 @@ import { isRelNull } from '@/utils/common';
 import { Input, List, Select, Space } from 'antd';
 import jsonp from 'fetch-jsonp';
 import _ from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import style from '../style.less';
+
 const defaultSearchConfig = [
   {
     value: 'baidu',
@@ -28,6 +29,7 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
   const [currentSearchSite, setCurrentSearchSite] = useState('baidu');
   const [searchValue, setSearchValue] = useState(null);
   const [data, setData] = useState(null);
+  const searchRef = useRef();
 
   const onSearch = (value, e, { source }) => {
     if (isRelNull(value) || source === 'clear') {
@@ -77,6 +79,26 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
     fetchData();
   }, [searchValue]);
 
+  useEffect(() => {
+    const focusSearchInput = () => {
+      window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+      searchRef && searchRef?.current && searchRef.current.focus();
+    }
+
+    const windoKeyDownEvent = (event) => {
+      if (event.ctrlKey && event.keyCode === 75) {
+        event.preventDefault();
+        focusSearchInput();
+      }
+    }
+
+    window.addEventListener("keydown", windoKeyDownEvent);
+
+    return () => {
+      window.removeEventListener("keydown", windoKeyDownEvent);
+    }
+  }, [])
+
   return (
     <FlexColumnCenter className={style.searchContainer}>
       <Space.Compact size='large' {...props}>
@@ -88,11 +110,12 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
           {...selectProps}
         />
         <Input.Search
-          placeholder='输入搜索内容'
+          placeholder='输入搜索内容（Ctrl + K） '
           allowClear
           onSearch={onSearch}
           value={searchValue}
           onChange={(e) => { setSearchValue(e.target.value) }}
+          ref={searchRef}
           {...inputProps} />
       </Space.Compact>
       <div className={style.dropDownContainer}>
