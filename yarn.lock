@@ -2217,7 +2217,7 @@
     "@types/history" "^4.7.11"
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8 || ^17.0 || ^18.0", "@types/react@^18.0.33", "@types/react@>=16.8":
+"@types/react@*", "@types/react@^16.8 || ^17.0 || ^18.0", "@types/react@^18.0.33", "@types/react@>=16", "@types/react@>=16.8":
   version "18.2.23"
   dependencies:
     "@types/prop-types" "*"
@@ -4094,6 +4094,16 @@ detect-node@^2.0.4:
   version "2.1.0"
   resolved "https://registry.npmmirror.com/detect-node/-/detect-node-2.1.0.tgz"
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
+
+dexie-react-hooks@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.npmmirror.com/dexie-react-hooks/-/dexie-react-hooks-1.1.7.tgz"
+  integrity sha512-Lwv5W0Hk+uOW3kGnsU9GZoR1er1B7WQ5DSdonoNG+focTNeJbHW6vi6nBoX534VKI3/uwHebYzSw1fwY6a7mTw==
+
+"dexie@^3.2 || ^4.0.1-alpha", dexie@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.npmmirror.com/dexie/-/dexie-3.2.4.tgz"
+  integrity sha512-VKoTQRSv7+RnffpOJ3Dh6ozknBqzWw/F3iqMdsZg958R0AS8AnY9x9d1lbwENr0gzeGJHXKcGhAMRaqys6SxqA==
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -8439,7 +8449,7 @@ react-router@6.3.0:
   dependencies:
     history "^5.2.0"
 
-react@*, "react@^0.14.0 || ^15.0.0-0 || ^16.0.0-0", "react@^16.11.0 || ^17.0.0 || ^18.0.0", react@^16.3.0, "react@^16.6.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.1.0, "react@>= 16.8.0", react@>=15, react@>=16.0.0, react@>=16.11.0, react@>=16.12.0, react@>=16.3.0, react@>=16.8, react@>=16.8.0, react@>=16.9.0, react@>=17.0.0, "react@15.x || ^16.0.0-0", react@18.1.0:
+react@*, "react@^0.14.0 || ^15.0.0-0 || ^16.0.0-0", "react@^16.11.0 || ^17.0.0 || ^18.0.0", react@^16.3.0, "react@^16.6.0 || ^17.0.0 || ^18.0.0", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.3 || ^17 || ^18", "react@^16.8.5 || ^17.0.0 || ^18.0.0", "react@^16.9.0 || ^17.0.0 || ^18.0.0", react@^18.0.0, react@^18.1.0, "react@>= 16.8.0", react@>=15, react@>=16, react@>=16.0.0, react@>=16.11.0, react@>=16.12.0, react@>=16.3.0, react@>=16.8, react@>=16.8.0, react@>=16.9.0, react@>=17.0.0, "react@15.x || ^16.0.0-0", react@18.1.0:
   version "18.1.0"
   resolved "https://registry.npmmirror.com/react/-/react-18.1.0.tgz"
   integrity sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==

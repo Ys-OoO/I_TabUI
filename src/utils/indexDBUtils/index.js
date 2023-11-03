@@ -1,5 +1,7 @@
 /**
- * 打开数据库
+ * @deprecated 引入dexie 代替工具类
+ * 
+ * @description 打开数据库
  * @param {object} dbName 数据库的名字
  * @param {string} storeName 仓库名称
  * @param {string} version 数据库的版本
@@ -38,7 +40,9 @@ export function openDB(dbName, storeName, version = 1) {
 }
 
 /**
- * 新增数据
+ * @deprecated 引入dexie 代替工具类
+ * 
+ * @description 新增数据
  * @param {object} db 数据库实例
  * @param {string} storeName 仓库名称
  * @param {string} data 数据
@@ -59,7 +63,9 @@ export function upsertData(db, storeName, data, onSuccess, onError) {
 }
 
 /**
- * 通过主键读取数据
+ * @deprecated 引入dexie 代替工具类
+ * 
+ * @description 通过主键读取数据
  * @param {object} db 数据库实例
  * @param {string} storeName 仓库名称
  * @param {string} key 主键值
@@ -81,7 +87,9 @@ export function getDataByKey(db, storeName, key) {
 }
 
 /**
- * 通过主键删除数据
+ * @deprecated 引入dexie 代替工具类
+ * 
+ * @description 通过主键删除数据
  * @param {object} db 数据库实例
  * @param {string} storeName 仓库名称
  * @param {object} id 主键值
@@ -102,7 +110,9 @@ function deleteDB(db, storeName, id) {
 }
 
 /**
- * 关闭数据库
+ * @deprecated 引入dexie 代替工具类
+ * 
+ * @description 关闭数据库
  * @param {object} db 数据库实例
  */
 export function closeDB(db) {
