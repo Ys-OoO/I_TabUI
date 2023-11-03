@@ -35,6 +35,8 @@ export function openDB(dbName, storeName, version = 1) {
         keyPath: 'folderkey', // 这是主键
         // autoIncrement: true // 实现自增
       });
+
+      //加入所需字段
     };
   });
 }
