@@ -37,6 +37,7 @@ export function openDB(dbName, storeName, version = 1) {
       });
 
       //加入所需字段
+      //...
     };
   });
 }
