@@ -3,15 +3,16 @@
   width: 30%;
   max-width: 600px;
   min-width: 400px;
+  position: relative;
 }
 
 .dropDownContainer{
   width: fit-content;
   margin: 0 auto;
+  position: absolute;
+  top: 48px;
 
   .listContent{
-    float: left;
-    z-index: 99;
     margin-top: 12px;
     border-radius: 10px;
     width: 300px;
@@ -24,3 +25,12 @@
   }
 }
 
+.folderBox{
+  height: 100%;
+  width: 100%;
+  //滚动贴合方式：沿y轴滚动
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
