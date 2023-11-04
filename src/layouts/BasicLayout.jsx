@@ -3,18 +3,19 @@ import { Flex, FlexColumn } from '@/components/styleBox';
 import { Outlet, useDispatch, useSelector } from '@umijs/max';
 import { useEffect } from 'react';
 import BasicNavigator from './BasicNavigator';
-import Dexie from 'dexie';
+import {createDb,upsertFavoritesFolder,db} from '@/utils/indexDBUtils/favoritesUtils';
 
 export default function BasicLayout() {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
 
   useEffect(() => {
-    const db = new Dexie('itab');
-    db.version(1).stores({
-      favoritesFolder:'++id, typeName',
-      favoritesItem:'++id, forderId, url, name , cover'
-    });
+    createDb();
+    upsertFavoritesFolder({id:1,typeName:"常用"});
+    upsertFavoritesFolder({id:2,typeName:"其他"});
+    return ()=>{
+      db.close();
+    }
   }, []);
 
   return (

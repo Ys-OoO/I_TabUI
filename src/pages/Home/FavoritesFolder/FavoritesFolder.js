@@ -1,9 +1,9 @@
-import { useDispatch } from '@umijs/max';
+import { useDispatch,useSelector } from '@umijs/max';
 import { Dropdown } from 'antd';
 import style from './style.less';
 
 
-export default function FavoritesFolder() {
+export default function FavoritesFolder({typeName,...props}) {
   const dispatch = useDispatch();
   const addSite = (e) => {
     dispatch({ type: 'home/save', config: { editVisible: true } })
@@ -28,8 +28,10 @@ export default function FavoritesFolder() {
     <>
       <Dropdown menu={{
         items,
-      }} trigger={['contextMenu']} >
-        <div className={style.folderBox}>FavoritesFolder</div>
+      }} trigger={['contextMenu']} {...props}>
+        <div className={style.folderBox}>
+          123
+        </div>
       </Dropdown >
     </>
   )

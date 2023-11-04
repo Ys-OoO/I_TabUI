@@ -1,9 +1,10 @@
+
 export default {
   namespace: 'home',
   state: {
     //对应添加收藏网站Item 对应的Modal
     editVisible: false,
-    currentItem: null
+    currentItem: null,
   },
   effects: {
     *change({ config }, { put }) {
@@ -11,8 +12,7 @@ export default {
         type: 'save',
         config
       });
-    }
-
+    },
   },
   reducers: {
     save(state, { config }) {
