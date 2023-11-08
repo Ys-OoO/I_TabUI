@@ -58,8 +58,21 @@ const Home = () => {
           <SearchInput className={style.searchContainer} />
           <div className={style.folderBox}>
             {_.map(favoritesFolder || [], (folder, index) => {
+              if (index === favoritesFolder.length - 1) {
+                return (
+                  <FavoritesFolder
+                    key={index}
+                    folder={folder}
+                    isLast={true}
+                  ></FavoritesFolder>
+                );
+              }
               return (
-                <FavoritesFolder key={index} folder={folder}></FavoritesFolder>
+                <FavoritesFolder
+                  key={index}
+                  folder={folder}
+                  isLast={false}
+                ></FavoritesFolder>
               );
             })}
           </div>

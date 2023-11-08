@@ -115,6 +115,7 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
           onSearch={onSearch}
           value={searchValue}
           onChange={(e) => { setSearchValue(e.target.value) }}
+          onBlur={() => { setData("") }}
           ref={searchRef}
           {...inputProps} />
       </Space.Compact>
