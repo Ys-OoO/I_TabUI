@@ -1,5 +1,15 @@
 // 运行时配置
+import { db } from '@/utils/indexDBUtils/db';
 import { message, notification } from 'antd';
+
+const refreshDB = async () => {
+  const existDBtable = await db.favoritesFolder.count();
+  if (existDBtable < 1) {
+    db.favoritesFolder.put({ typeName: '常用' });
+    db.favoritesFolder.put({ typeName: '其他' });
+  }
+};
+refreshDB();
 
 // 重写umi提供 的 render
 export const render = async (oldRender: () => void): Promise<void> => {

@@ -1,15 +1,20 @@
+import { FlexColumn } from '@/components/styleBox';
 import { Avatar } from 'antd';
 import style from './style.less';
 
-export default function CoverItem({ type, desc, src, ...props }) {
+export default function CoverItem({ coverInfo = {}, ...props }) {
+  const { desc, src } = coverInfo;
 
   return (
     <>
-      {
-      String(type) === 'img' ?
-        <Avatar alt={desc} size={64} src={src} draggable={false}  {...props} className={style.roundBox} /> :
-        <Avatar alt={desc} size={64}  {...props} className={style.roundBox}>{desc || "Text"}</Avatar>
-      }
+      <FlexColumn style={{ alignItems: 'center' }}>
+        {
+          String(coverInfo?.type) === 'img' ?
+            <Avatar alt={desc} shape="square" size={48} src={src} draggable={false}  {...props} className={style.roundBox} /> :
+            <Avatar alt={desc} shape="square" size={48}  {...props} className={style.roundBox}>{coverInfo?.text || "Text"}</Avatar>
+        }
+        <div className={style.desc}>{coverInfo?.name}</div>
+      </FlexColumn>
     </>
   )
 }

@@ -23,16 +23,6 @@ const routes: IRoute[] = [
         path: '/home',
         component: './Home',
       },
-      {
-        name: '笔记',
-        path: '/article',
-        component: './Article',
-      },
-      {
-        name: '新建笔记',
-        path: '/addArticle/:articleId',
-        component: '@/pages/Article/ArticleEditor',
-      },
     ],
   },
 ];

@@ -1,5 +1,6 @@
 import { Input } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { FlexRow } from '../styleBox';
 import CoverItem from './CoverItem/CoverItem';
 import style from './style.less';
 
@@ -11,6 +12,12 @@ export default function CoverSelector({ src, onChange, ...props }) {
   const controlled = 'value' in props;
   const [seletctType, setSelectType] = useState("img")
   const [text, setText] = useState(props?.value);
+
+  useEffect(() => {
+    if (onChange) {
+      onChange({ type: 'img' })
+    }
+  }, [])
 
   const changeHandler = (e) => {
     setText(e.target.value)
@@ -33,20 +40,26 @@ export default function CoverSelector({ src, onChange, ...props }) {
       {
         controlled && seletctType === "text" ? <Input placeholder='输入描述文字' value={text} onChange={changeHandler} style={{ marginBottom: 8 }} /> : undefined
       }
-      {
-        ["img", "text"].map((type) => {
-          return <CoverItem
-            type={type}
-            key={type}
-            desc={text}
-            src={src}
-            onClick={() => {
-              handleClick(type);
-            }}
-            style={seletctType === type ? selectedStyle : null}
-          />
-        })
-      }
+      <FlexRow>
+        {
+          ["img", "text"].map((type) => {
+            const coverInfo = {
+              type,
+              desc: text,
+              text: text,
+              src
+            }
+            return <CoverItem
+              key={type}
+              coverInfo={coverInfo}
+              onClick={() => {
+                handleClick(type);
+              }}
+              style={seletctType === type ? selectedStyle : null}
+            />
+          })
+        }
+      </FlexRow>
     </div>
   )
 }
