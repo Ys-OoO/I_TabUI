@@ -13,7 +13,7 @@ function getRotateDegree(mousePosition, cardLength) {
 export default function ModuleCard({
   cardInfo = defalutCardInfo,
   borderColor,
-  keyProp, //必穿，通过此作为mousemove事件添加元素的标识
+  keyProp, //必传，通过此作为mousemove事件添加元素的标识
   ...props
 }) {
   useEffect(() => {
