@@ -1,30 +1,31 @@
 import CoverSelector from '@/components/CoverSelector';
+import { db } from '@/utils/indexDBUtils/db';
 import { EditTwoTone, PlusSquareTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from '@umijs/max';
-import { Button, Form, Input, Modal ,Select} from 'antd';
+import { Button, Form, Input, Modal, Select } from 'antd';
+import { useLiveQuery } from 'dexie-react-hooks';
 import _ from 'lodash';
 import { useState } from 'react';
-import {db, upsertFavoritesItem} from '@/utils/indexDBUtils/favoritesUtils';
-import { useLiveQuery } from 'dexie-react-hooks';
 
 export default function EditFavoriteItemModal() {
   const disptch = useDispatch();
-  const { editVisible, currentItem} = useSelector(state => state.home);
+  const { editVisible, currentItem } = useSelector(state => state.home);
   const [src, setSrc] = useState(null);
   const [form] = Form.useForm();
-  //TODO 总报错
   const favoritesFolder = useLiveQuery(
-    () => db["favoritesFolder"].toArray()
+    () => db["favoritesFolder"]?.toArray(), [], []
   );
-  
+
   const onSave = async () => {
     const favoriteItem = await form.validateFields().then(() => {
       return form.getFieldsValue()
     }).catch();
-    //保存到IndexedDb
-    console.log(favoriteItem);
-    
-    upsertFavoritesItem(favoriteItem);
+
+    const folder = await db.favoritesFolder.where({ typeName: favoriteItem.typeName }).limit(1).toArray();
+    if (folder?.length === 1) {
+      //保存到IndexedDb
+      db.favoritesItem.add({ ...favoriteItem, folderId: folder[0].id })
+    }
     onCancel();
   }
 
@@ -83,12 +84,12 @@ export default function EditFavoriteItemModal() {
         </Form.Item>
         <Form.Item label="分类" name="typeName" rules={[{ required: true }]}>
           <Select>
-            {favoritesFolder && favoritesFolder?.map((folder,index)=>{
+            {favoritesFolder && favoritesFolder?.map((folder, index) => {
               return <Select.Option key={index} value={folder?.typeName}>{folder?.typeName}</Select.Option>
             })}
           </Select>
         </Form.Item>
-        <Form.Item label="图标" name="cover" rules={[{ required: true }]}>
+        <Form.Item label="图标" name="cover" rules={[{ required: true }]} >
           <CoverSelector src={src} />
         </Form.Item>
       </Form>

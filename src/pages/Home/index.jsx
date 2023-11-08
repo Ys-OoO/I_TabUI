@@ -1,22 +1,54 @@
 import Clock from '@/components/Clock';
-import { FlexColumnAuto, FlexColumnCenter } from '@/components/styleBox';
+import {
+  FlexCenter,
+  FlexColumnAuto,
+  FlexColumnCenter,
+  MotionBox,
+} from '@/components/styleBox';
+import FavoritesFolder from '@/pages/Home/FavoritesFolder/FavoritesFolder';
 import Module from '@/pages/Module';
+import { db } from '@/utils/indexDBUtils/db';
+import { CaretDownFilled } from '@ant-design/icons';
 import { useDispatch } from '@umijs/max';
-import { useEffect } from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { useEffect, useState } from 'react';
 import TodoList from '../Todo';
 import EditFavoriteItemModal from './EditFavoriteItemModal/EditFavoriteItemModal';
-import FavoritesFolder from './FavoritesFolder/FavoritesFolder';
 import SearchInput from './SearchInput/SearchInput';
 import style from './style.less';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const favoritesFolder = useLiveQuery(async () => {
+    return await db['favoritesFolder'].toArray();
+  });
+  const [currentScrollY, setCurrentScrollY] = useState(0);
 
   useEffect(() => {
     dispatch({
       type: 'todo/refresh',
     });
   }, []);
+
+  useEffect(() => {
+    function getScrollY(e) {
+      setCurrentScrollY(window.scrollY);
+    }
+    window.addEventListener('scroll', getScrollY);
+
+    return () => {
+      window.removeEventListener('scroll', getScrollY);
+    };
+  }, []);
+  const scrollToBottom = () => {
+    window.scrollTo({
+      behavior: 'smooth',
+      left: 0,
+      top: window.innerHeight,
+    });
+  };
+
+  if (!favoritesFolder) return null;
 
   return (
     <>
@@ -25,10 +57,28 @@ const Home = () => {
           <Clock style={{ marginTop: 48 }} />
           <SearchInput className={style.searchContainer} />
           <div className={style.folderBox}>
-            <FavoritesFolder key="" />
-            <FavoritesFolder />
-            <FavoritesFolder />
+            {_.map(favoritesFolder || [], (folder, index) => {
+              return (
+                <FavoritesFolder key={index} folder={folder}></FavoritesFolder>
+              );
+            })}
           </div>
+          {currentScrollY > 300 ? undefined : (
+            <FlexCenter className={style.homeFooter} onClick={scrollToBottom}>
+              <MotionBox
+                animate={{
+                  y: -10,
+                  transition: {
+                    repeat: Infinity,
+                    repeatType: 'mirror',
+                    duration: 2,
+                  },
+                }}
+              >
+                <CaretDownFilled style={{ color: '#FFF', fontSize: '50px' }} />
+              </MotionBox>
+            </FlexCenter>
+          )}
         </FlexColumnCenter>
         <Module />
         <EditFavoriteItemModal />

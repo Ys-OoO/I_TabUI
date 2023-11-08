@@ -2,23 +2,19 @@ import IFloatButton from '@/components/IFloatButton';
 import {
   FavoritesFolderIcon,
   FunctionIcon,
-  HomeIcon,
-  MarkdownIcon,
+  GitHubIcon,
   MoreIcon,
 } from '@/components/icons';
 import { debouncePush } from '@/utils/common';
+import { useLocation } from '@umijs/max';
 import { FloatButton } from 'antd';
 import _ from 'lodash';
 import { Fragment } from 'react';
 import style from './style.less';
 
 export default function BasicNavigator() {
+  const location = useLocation();
   const navigationItems = [
-    {
-      icon: <MarkdownIcon />,
-      path: '/article',
-      tooltip: '写文章',
-    },
     {
       icon: <FavoritesFolderIcon />,
       onClick: () => {
@@ -40,10 +36,24 @@ export default function BasicNavigator() {
   return (
     <Fragment>
       <div className={style.homebtn}>
+        {/* 目前无路由，先注释 */}
+        {/* <IFloatButton
+          key="home"
+          onClick={() => {
+            debouncePush('/home', 200);
+          }}
+          icon={<HomeIcon />}
+          style={{
+            left: 24,
+            top: 24,
+          }}
+        /> */}
         <IFloatButton
           key="home"
-          onClick={debouncePush('/home', 200)}
-          icon={<HomeIcon />}
+          onClick={() => {
+            window.open('https://github.com/Ys-OoO/I_TabUI');
+          }}
+          icon={<GitHubIcon></GitHubIcon>}
           style={{
             left: 24,
             top: 24,
