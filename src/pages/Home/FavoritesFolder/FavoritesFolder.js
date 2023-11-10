@@ -3,13 +3,19 @@ import { FlexAuto, FlexCenter, FlexColumn, MotionBox } from '@/components/styleB
 import { db } from '@/utils/indexDBUtils/db';
 import { FolderAddTwoTone } from '@ant-design/icons';
 import { useDispatch } from '@umijs/max';
-import { Dropdown, Input, message, notification } from 'antd';
+import { Dropdown, Input, message } from 'antd';
 import { useLiveQuery } from 'dexie-react-hooks';
 import _ from 'lodash';
 import { useState } from 'react';
+import styled from 'styled-components';
 import style from './style.less';
 
-
+const DropDownWrapper = styled.div`
+  text-align:center;
+  width:100%;
+  font-size:15px;
+  font-weight:550;
+`
 export default function FavoritesFolder({ folder = {}, isLast = false, ...props }) {
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
@@ -22,8 +28,11 @@ export default function FavoritesFolder({ folder = {}, isLast = false, ...props 
   }, [])
 
   const editFolder = (e) => {
-    notification.info({
-      message: "当前功能未开发完毕😶‍🌫️"
+    dispatch({
+      type: 'home/change',
+      config: {
+        folderManage: true
+      }
     })
   }
 
@@ -37,16 +46,15 @@ export default function FavoritesFolder({ folder = {}, isLast = false, ...props 
       message.info('分类已存在，请重新命名🫥')
     }
     await db.favoritesFolder.add({ typeName });
-    // setIsEdit(false)
   }
 
   const items = [
     {
-      label: <div onClick={addSite}>添加网址</div>,
+      label: <DropDownWrapper >添加网址</DropDownWrapper>,
       key: 'addSite'
     },
     {
-      label: <div onClick={editFolder}>编辑收藏夹</div>,
+      label: <DropDownWrapper >编辑收藏夹</DropDownWrapper>,
       key: 'editFolder'
     },
   ];
@@ -55,6 +63,12 @@ export default function FavoritesFolder({ folder = {}, isLast = false, ...props 
     <>
       <Dropdown menu={{
         items,
+        onClick: (item) => {
+          console.log(item);
+          if (item.key === "addSite")
+            addSite()
+          if (item.key === 'editFolder') editFolder()
+        }
       }}
         trigger={['contextMenu']}
         {...props}

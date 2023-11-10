@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from '@umijs/max';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { useLiveQuery } from 'dexie-react-hooks';
 import _ from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+const { Option } = Select
 
 export default function EditFavoriteItemModal() {
   const disptch = useDispatch();
@@ -13,18 +15,32 @@ export default function EditFavoriteItemModal() {
   const [src, setSrc] = useState(null);
   const [form] = Form.useForm();
   const favoritesFolder = useLiveQuery(
-    () => db["favoritesFolder"]?.toArray(), [], []
+    () => db["favoritesFolder"].toArray()
   );
 
+  useEffect(() => {
+    if (currentItem) {
+      form.setFieldsValue(currentItem);
+      changeCover(currentItem.url);
+    }
+  }, [currentItem])
+
+
   const onSave = async () => {
+    //获取当前添加/修改 项所属文件夹
     const favoriteItem = await form.validateFields().then(() => {
       return form.getFieldsValue()
     }).catch();
 
-    const folder = await db.favoritesFolder.where({ typeName: favoriteItem.typeName }).limit(1).toArray();
-    if (folder?.length === 1) {
-      //保存到IndexedDb
-      db.favoritesItem.add({ ...favoriteItem, folderId: folder[0].id })
+    if (currentItem) {
+      //修改
+      db.favoritesItem.update(currentItem.id, favoriteItem)
+    } else {
+      const folder = await db.favoritesFolder.where({ typeName: favoriteItem.typeName }).limit(1).toArray();
+      if (folder?.length === 1) {
+        //保存到IndexedDb
+        db.favoritesItem.add({ ...favoriteItem, folderId: folder[0].id })
+      }
     }
     onCancel();
   }
@@ -33,7 +49,7 @@ export default function EditFavoriteItemModal() {
     if (!value) {
       return Promise.reject("请填写地址");
     }
-    const regUrl = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~/])+$/;
+    const regUrl = /^(https?|ftp):\/\/(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\S+)?$/;
     if (regUrl.test(value.trim())) {
       return Promise.resolve();
     }
@@ -41,13 +57,18 @@ export default function EditFavoriteItemModal() {
   }
 
   const onCancel = () => {
-    disptch({ type: 'home/save', config: { editVisible: false } })
+    disptch({ type: 'home/save', config: { editVisible: false, currentItem: null } })
     form.resetFields();
     setSrc("");
   }
-  const getCover = _.debounce(async (e) => {
+
+  const onChange = _.debounce((e) => {
     const address = e.target.value;
-    //目前该接口直接返回图片，为此我们模拟获取到了Url，获取一次仅仅充当测试地址是否可获取favico
+    changeCover(address);
+  }, 300)
+
+  const changeCover = async (address) => {
+    //目前该接口直接返回favico，为此我们模拟获取到了Url
     // const result = await addressValidator(null, address)
     //   .then(() => {
     //     const params = {
@@ -62,7 +83,7 @@ export default function EditFavoriteItemModal() {
     //     message.info("获取失败,请检查地址或使用Text图标");
     //   });
     setSrc(`https://api.7585.net.cn/getico/api.php?url=${address}`);
-  }, 500)
+  }
 
   return (
     <Modal
@@ -74,15 +95,19 @@ export default function EditFavoriteItemModal() {
           <><EditTwoTone style={{ marginRight: 8 }} /> 编辑收藏项</> :
           <><PlusSquareTwoTone style={{ marginRight: 8 }} /> 添加收藏项</>
       }
+      zIndex={101}
     >
       <Form name='favoritItem' layout='vertical' size='large' form={form} requiredMark={false} validateTrigger="onSubmit">
-        <Form.Item label="网址" name="url" rules={[{ required: true, validator: addressValidator }]}  >
-          <Input placeholder='https://...' allowClear onChange={getCover} />
+        <Form.Item hidden name="id">
+          <Input />
         </Form.Item>
-        <Form.Item label="名称" name="name" rules={[{ required: true }]}>
+        <Form.Item label="网址：" name="url" rules={[{ required: true, validator: addressValidator }]}  >
+          <Input placeholder='https://...' allowClear onChange={onChange} />
+        </Form.Item>
+        <Form.Item label="名称：" name="name" rules={[{ required: true }]}>
           <Input allowClear />
         </Form.Item>
-        <Form.Item label="分类" name="typeName" rules={[{ required: true }]}>
+        <Form.Item label="分类：" name="typeName" rules={[{ required: true }]}>
           <Select>
             {favoritesFolder && favoritesFolder?.map((folder, index) => {
               return <Select.Option key={index} value={folder?.typeName}>{folder?.typeName}</Select.Option>

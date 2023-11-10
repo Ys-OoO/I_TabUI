@@ -117,7 +117,8 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
           onChange={(e) => { setSearchValue(e.target.value) }}
           onBlur={() => { setData("") }}
           ref={searchRef}
-          {...inputProps} />
+          {...inputProps}
+        />
       </Space.Compact>
       <div className={style.dropDownContainer}>
         <div className={style.listContent}>
@@ -125,8 +126,8 @@ export default function SearchInput({ otherSearchConfig = [], inputProps, select
             bordered
             dataSource={data}
             renderItem={(item) => (
-              <List.Item >
-                <a onClick={windoSearch} target='_blank' className={style.selectedItem} style={{ width: '100%', color: '#333' }}>
+              <List.Item  >
+                <a onClick={windoSearch} className={style.selectedItem} target='_blank' style={{ width: '100%', color: '#333' }}>
                   {item.label}
                 </a>
               </List.Item>
