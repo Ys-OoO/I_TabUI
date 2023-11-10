@@ -13,6 +13,7 @@ import { useDispatch } from '@umijs/max';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useState } from 'react';
 import TodoList from '../Todo';
+import EditFavoriteFolderDrawer from './EditFavoriteFolderDrawer/EditFavoriteFolderDrawer';
 import EditFavoriteItemModal from './EditFavoriteItemModal/EditFavoriteItemModal';
 import SearchInput from './SearchInput/SearchInput';
 import style from './style.less';
@@ -95,6 +96,7 @@ const Home = () => {
         </FlexColumnCenter>
         <Module />
         <EditFavoriteItemModal />
+        <EditFavoriteFolderDrawer />
       </FlexColumnAuto>
       <TodoList />
     </>

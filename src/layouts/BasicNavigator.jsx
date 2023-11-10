@@ -6,7 +6,7 @@ import {
   MoreIcon,
 } from '@/components/icons';
 import { debouncePush } from '@/utils/common';
-import { useLocation } from '@umijs/max';
+import { useDispatch, useLocation } from '@umijs/max';
 import { FloatButton } from 'antd';
 import _ from 'lodash';
 import { Fragment } from 'react';
@@ -14,11 +14,17 @@ import style from './style.less';
 
 export default function BasicNavigator() {
   const location = useLocation();
+  const dispatch = useDispatch();
   const navigationItems = [
     {
       icon: <FavoritesFolderIcon />,
       onClick: () => {
-        //TODO 弹出收藏夹
+        dispatch({
+          type: 'home/change',
+          config: {
+            folderManage: true,
+          },
+        });
       },
       noRoute: true,
       tooltip: '收藏夹',
@@ -51,7 +57,7 @@ export default function BasicNavigator() {
         <IFloatButton
           key="home"
           onClick={() => {
-            window.open('https://github.com/Ys-OoO/I_TabUI');
+            window.open('https://github.com/Ys-OoO');
           }}
           icon={<GitHubIcon></GitHubIcon>}
           style={{

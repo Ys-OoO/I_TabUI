@@ -5,6 +5,8 @@ export default {
     //对应添加收藏网站Item 对应的Modal
     editVisible: false,
     currentItem: null,
+    //对应收藏夹管理抽屉
+    folderManage: false,
   },
   effects: {
     *change({ config }, { put }) {
