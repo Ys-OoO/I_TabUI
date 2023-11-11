@@ -1,12 +1,12 @@
 import CoverItem from '@/components/CoverSelector/CoverItem/CoverItem';
 import { FlexAuto, FlexCenter, FlexColumn, MotionBox } from '@/components/styleBox';
 import { db } from '@/utils/indexDBUtils/db';
-import { FolderAddTwoTone } from '@ant-design/icons';
+import { CaretDownFilled, FolderAddTwoTone } from '@ant-design/icons';
 import { useDispatch } from '@umijs/max';
 import { Dropdown, Input, message } from 'antd';
 import { useLiveQuery } from 'dexie-react-hooks';
 import _ from 'lodash';
-import { useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import styled from 'styled-components';
 import style from './style.less';
 
@@ -16,9 +16,18 @@ const DropDownWrapper = styled.div`
   font-size:15px;
   font-weight:550;
 `
-export default function FavoritesFolder({ folder = {}, isLast = false, ...props }) {
+
+const FavoritesFolder = forwardRef(function FavoritesFolder({ folder = {}, index, count = 0, onClickDownArrow, ...props }, ref) {
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
+  const singleFolderRef = useRef();
+  const isLast = index + 1 === count;
+
+  useImperativeHandle(ref, () => {
+    return {
+      currentFolderHeight: () => singleFolderRef.current.offsetHeight
+    }
+  }, [index]);
 
   const addSite = (e) => {
     dispatch({ type: 'home/save', config: { editVisible: true } })
@@ -64,7 +73,6 @@ export default function FavoritesFolder({ folder = {}, isLast = false, ...props 
       <Dropdown menu={{
         items,
         onClick: (item) => {
-          console.log(item);
           if (item.key === "addSite")
             addSite()
           if (item.key === 'editFolder') editFolder()
@@ -73,7 +81,7 @@ export default function FavoritesFolder({ folder = {}, isLast = false, ...props 
         trigger={['contextMenu']}
         {...props}
       >
-        <FlexColumn className={style.folderBox}>
+        <FlexColumn className={style.folderBox} ref={singleFolderRef}>
           <div className={style.folderItemContainer}>
             {_.map(favoritesItem || [], (item, index) => {
               const src = item.cover.src;
@@ -98,11 +106,28 @@ export default function FavoritesFolder({ folder = {}, isLast = false, ...props 
                   </MotionBox>
                   : undefined
               }
-            </FlexCenter> : undefined
+            </FlexCenter> : <MotionBox
+              animate={{
+                y: -10,
+                transition: {
+                  repeat: Infinity,
+                  repeatType: 'mirror',
+                  duration: 2,
+                },
+              }}
+              onClick={() => { onClickDownArrow && onClickDownArrow(index) }}
+            >
+              <CaretDownFilled style={{ color: '#FFF', fontSize: '50px' }} />
+            </MotionBox>
           }
         </FlexColumn>
 
       </Dropdown >
     </>
   )
-}
+})
+// export default function FavoritesFolder({ folder = {}, isLast = false, ...props }) {
+
+// }
+
+export default FavoritesFolder;

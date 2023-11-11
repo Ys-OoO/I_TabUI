@@ -20,7 +20,6 @@ export default function BasicLayout() {
       <Flex>
         <Outlet />
       </Flex>
-      {/* modules */}
       <BasicNavigator />
       <IBackground />
     </FlexColumn>
