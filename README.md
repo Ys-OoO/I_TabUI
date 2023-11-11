@@ -2,7 +2,7 @@
 
 - 😎 A new tab for your own browser.
 - ⚙️ Tech Stack: <p/>
-  <div align="center"> <img src="https://github.com/Ys-OoO/I_TabUI/assets/techStack.jpg" style="width:50%;height:auto;"> </div>
+  <div align="center"> <img src="./assets/techStack.jpg" style="width:50%;height:auto;"> </div>
 
 ## 👻 Features
 
@@ -25,9 +25,9 @@ Please contribute using [GitHub Flow](https://guides.github.com/introduction/flo
 
 ## 👓 Preview
 
-![image](https://github.com/Ys-OoO/I_TabUI/assets/preview.jpg)
+![image](./assets/preview.jpg)
 
 ## 📞 Contacts
 
 - Email： ys0514@yeah.net
-- WeChat: <p/> <img src="https://github.com/Ys-OoO/I_TabUI/assets/wechat.jpg" style="width:20%;height:auto;">
+- WeChat: <p/> <img src="./assets/wechat.jpg" style="width:20%;height:auto;">
