@@ -117,7 +117,7 @@ const FavoritesFolder = forwardRef(function FavoritesFolder({ folder = {}, index
               }}
               onClick={() => { onClickDownArrow && onClickDownArrow(index) }}
             >
-              <CaretDownFilled style={{ color: '#FFF', fontSize: '50px' }} />
+              <CaretDownFilled style={{ color: '#FFF', fontSize: '50px',cursor:'pointer' }} />
             </MotionBox>
           }
         </FlexColumn>

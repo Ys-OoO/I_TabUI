@@ -7,7 +7,7 @@ export default function CoverItem({ coverInfo = {}, isEdit = false, ...props }) 
 
   return (
     <>
-      <FlexColumn style={{ alignItems: 'center' }} {...props}>
+      <FlexColumn style={{ alignItems: 'center',userSelect:'none' }} {...props}>
         {
           String(coverInfo?.type) === 'img' ?
             <Avatar alt={desc} shape="square" size={48} src={src} draggable={false} className={style.roundBox} /> :
