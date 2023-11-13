@@ -6,7 +6,7 @@ type EnvConfig = {
 const config: Record<string, EnvConfig> = {
   dev: {
     SERVICE_API: 'http://localhost:8080',
-    I_TAB_URL: 'https://fat-metis2.hellobike.cn',
+    I_TAB_URL: 'https://...',
   },
 } as const;
 

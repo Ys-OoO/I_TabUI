@@ -6,4 +6,6 @@ export default defineConfig({
   dva: {},
   routes: routes,
   npmClient: 'yarn',
+  favicons: ['/favicon.ico'],
+  title: `I_Tab`,
 });

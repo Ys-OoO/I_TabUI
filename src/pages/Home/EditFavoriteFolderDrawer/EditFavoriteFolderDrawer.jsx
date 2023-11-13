@@ -76,10 +76,11 @@ export default function EditFavoriteFolderDrawer() {
       size="large"
       styles={{
         body: {
-          backgroundImage: 'linear-gradient(-180deg,#BCC5CE 0%, #929EAD 98%)',
+          backgroundImage:
+            'linear-gradient(180deg,#DEF3F8 0%, #2caaec 85%, #1b87e3 100%)',
         },
         header: {
-          backgroundColor: '#BCC5CE',
+          backgroundColor: '#dcf1f7',
         },
       }}
       zIndex={100}
