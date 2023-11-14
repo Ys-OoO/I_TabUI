@@ -5,14 +5,12 @@ import { useDispatch, useSelector } from '@umijs/max';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { useLiveQuery } from 'dexie-react-hooks';
 import _ from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-const { Option } = Select
 
 export default function EditFavoriteItemModal() {
   const disptch = useDispatch();
   const { editVisible, currentItem } = useSelector(state => state.home);
-  const [src, setSrc] = useState(null);
   const [form] = Form.useForm();
   const favoritesFolder = useLiveQuery(
     () => db["favoritesFolder"].toArray()
@@ -59,7 +57,6 @@ export default function EditFavoriteItemModal() {
   const onCancel = () => {
     disptch({ type: 'home/save', config: { editVisible: false, currentItem: null } })
     form.resetFields();
-    setSrc("");
   }
 
   const onChange = _.debounce((e) => {
@@ -82,7 +79,7 @@ export default function EditFavoriteItemModal() {
     //     console.log(err);
     //     message.info("获取失败,请检查地址或使用Text图标");
     //   });
-    setSrc(`https://api.7585.net.cn/getico/api.php?url=${address}`);
+    form.setFieldValue('cover', { src: `https://api.7585.net.cn/getico/api.php?url=${address}` })
   }
 
   return (
@@ -114,8 +111,8 @@ export default function EditFavoriteItemModal() {
             })}
           </Select>
         </Form.Item>
-        <Form.Item label="图标" name="cover" rules={[{ required: true }]} >
-          <CoverSelector src={src} />
+        <Form.Item label="图标：" name="cover" rules={[{ required: true }]} >
+          <CoverSelector />
         </Form.Item>
       </Form>
     </Modal >

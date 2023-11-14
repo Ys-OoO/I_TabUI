@@ -49,6 +49,7 @@ export default function EditFavoriteFolderDrawer() {
         url: favorItem.url,
         name: favorItem.name,
         typeName: favorItem.typeName,
+        cover: favorItem.cover,
       };
       disptach({
         type: 'home/change',

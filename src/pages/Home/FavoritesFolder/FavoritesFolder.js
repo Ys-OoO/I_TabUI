@@ -52,7 +52,8 @@ const FavoritesFolder = forwardRef(function FavoritesFolder({ folder = {}, index
     }
     const existFolder = await db.favoritesFolder.where({ typeName }).toArray();
     if (existFolder.length > 0) {
-      message.info('分类已存在，请重新命名🫥')
+      message.info('分类已存在，请重新命名🫥');
+      return;
     }
     await db.favoritesFolder.add({ typeName });
   }
@@ -117,7 +118,7 @@ const FavoritesFolder = forwardRef(function FavoritesFolder({ folder = {}, index
               }}
               onClick={() => { onClickDownArrow && onClickDownArrow(index) }}
             >
-              <CaretDownFilled style={{ color: '#FFF', fontSize: '50px',cursor:'pointer' }} />
+              <CaretDownFilled style={{ color: '#FFF', fontSize: '50px', cursor: 'pointer' }} />
             </MotionBox>
           }
         </FlexColumn>
