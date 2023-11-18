@@ -18,32 +18,12 @@ const Home = () => {
   });
   const singleFloderRef = useRef();
   const folderBoxRef = useRef();
-  // const [currentScrollY, setCurrentScrollY] = useState(0);
 
   useEffect(() => {
     dispatch({
       type: 'todo/refresh',
     });
   }, []);
-
-  // useEffect(() => {
-  //   function getScrollY(e) {
-  //     setCurrentScrollY(window.scrollY);
-  //   }
-  //   window.addEventListener('scroll', getScrollY);
-
-  //   return () => {
-  //     window.removeEventListener('scroll', getScrollY);
-  //   };
-  // }, []);
-
-  // const scrollToBottom = () => {
-  //   window.scrollTo({
-  //     behavior: 'smooth',
-  //     left: 0,
-  //     top: window.innerHeight,
-  //   });
-  // };
 
   const scrollToNextFolder = (index) => {
     const height = singleFloderRef.current.currentFolderHeight();
@@ -71,22 +51,6 @@ const Home = () => {
               );
             })}
           </div>
-          {/* {currentScrollY > 300 ? undefined : (
-            <FlexCenter className={style.homeFooter} onClick={scrollToBottom}>
-              <MotionBox
-                animate={{
-                  y: -10,
-                  transition: {
-                    repeat: Infinity,
-                    repeatType: 'mirror',
-                    duration: 2,
-                  },
-                }}
-              >
-                <CaretDownFilled style={{ color: '#FFF', fontSize: '50px' }} />
-              </MotionBox>
-            </FlexCenter>
-          )} */}
         </FlexColumnCenter>
         {/* 隐藏ModuleCard <Module /> */}
         <EditFavoriteItemModal />

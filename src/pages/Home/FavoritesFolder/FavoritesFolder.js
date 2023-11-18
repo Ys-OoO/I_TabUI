@@ -127,8 +127,5 @@ const FavoritesFolder = forwardRef(function FavoritesFolder({ folder = {}, index
     </>
   )
 })
-// export default function FavoritesFolder({ folder = {}, isLast = false, ...props }) {
-
-// }
 
 export default FavoritesFolder;
