@@ -13,7 +13,7 @@ import style from './style.less';
 const DropDownWrapper = styled.div`
   text-align:center;
   width:100%;
-  font-size:15px;
+  font-size:14px;
   font-weight:550;
 `
 
