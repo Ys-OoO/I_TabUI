@@ -50,12 +50,23 @@ export default function AddTodoDrawer() {
       placement="right"
       getContainer={false}
       maskClassName={style.drawerMask}
-      footer={<Button onClick={addTodo}>确定</Button>}
+      footer={<Button onClick={addTodo} style={{ backgroundColor: 'var(--card-bgc)', color: 'var(--card-color)' }}>确定</Button>}
       style={{ height: 190 }}
       destroyOnClose={true}
       autoFocus={true}
       afterOpenChange={() => {
         inputRef && inputRef?.current.focus();
+      }}
+      styles={{
+        body: {
+          backgroundColor: 'var(--card-bgc)',
+        },
+        header: {
+          backgroundColor: 'var(--card-bgc)',
+        },
+        footer: {
+          backgroundColor: 'var(--card-bgc)',
+        }
       }}
     >
       <Input

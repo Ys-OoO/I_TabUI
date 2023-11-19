@@ -28,7 +28,6 @@
   top: 0;
   left: 0;
   z-index: 100;
-
 }
 
 .todoItem{
@@ -38,6 +37,7 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 50%);
   height:95px;
   position: relative;
+  color: var(--card-color);
 
   .todoLeft{
     flex:1;
@@ -71,12 +71,12 @@
       cursor: pointer;
       display: flex;
       justify-content: center;
-      background-color: #eee;
+      background-color: var(--card-bgc);
       flex: 0.7;
     }
 
     .actions:hover{
-      background-color: #fff;
+      background-color: rgb(165, 162, 162);
     }
 
   }
@@ -93,7 +93,8 @@
 }
 
 .card{
-  background-color: #fff;
+  background-color: var(--card-bgc);
+  color: var(--vard-color);
   border-radius: 8px;
 
   .cardHeader{
@@ -104,11 +105,20 @@
     .left{
       margin-left: 16px;
       margin-top: 4px;
+      color:var(--card-color);
     }
   
     .right{
       margin-right: 16px;
       margin-top: 4px;
+
+      .themeBtn{
+        border: 0;
+      }
+
+      .themeBtn:hover{
+        box-shadow: 0 0 4px rgba(0, 0, 0, 80%);;
+      }
     }
   }
   
@@ -136,7 +146,7 @@
 
   .footer{
     .todoAction{
-      border-top: 2px solid #f0f0f0;
+      border-top: 1px solid gray;
       padding-top: 8px;
       height: 40px;
     }

@@ -2,15 +2,13 @@ import IBackground from '@/components/IBackground';
 import IFloatButton from '@/components/IFloatButton';
 import { DarkIcon, LightIcon } from '@/components/icons';
 import { Flex, FlexColumn } from '@/components/styleBox';
+import { setCssVar } from '@/utils/common';
 import { db } from '@/utils/indexDBUtils/db';
 import { Outlet, useDispatch, useSelector } from '@umijs/max';
 import { ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
 import BasicNavigator from './BasicNavigator';
 
-const setCssVar = (cssVar, value) => {
-  document.documentElement.style.setProperty(cssVar, value);
-};
 export default function BasicLayout() {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
@@ -20,12 +18,14 @@ export default function BasicLayout() {
     setCssVar('--theme-bgc', '#fff');
     setCssVar('--theme-color', '#333');
     setCssVar('--theme-shadow', '#fff');
+    setCssVar('--card-bgc', '#fff');
+    setCssVar('--card-color', '#333');
     return () => {
       db.close();
     };
   }, []);
 
-  const handleChangeTheme = () => {
+  const togggleTheme = () => {
     const style = window.getComputedStyle(document.documentElement);
     if (style.getPropertyValue('--theme-bgc') === '#333') {
       setCssVar('--theme-bgc', '#fff');
@@ -66,7 +66,7 @@ export default function BasicLayout() {
         </Flex>
         <BasicNavigator />
         <IFloatButton
-          onClick={handleChangeTheme}
+          onClick={togggleTheme}
           icon={themIcon}
           style={{
             right: 74,

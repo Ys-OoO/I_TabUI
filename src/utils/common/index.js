@@ -53,3 +53,12 @@ export const JSONParse = (value, errorValue = {}, noConsole) => {
   }
   return jsonData;
 };
+
+/**
+ * 为document(<html></html>)设置style变量
+ * @param {*} cssVar 
+ * @param {*} value 
+ */
+export const setCssVar = (cssVar, value) => {
+  document.documentElement.style.setProperty(cssVar, value);
+};

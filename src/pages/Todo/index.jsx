@@ -1,7 +1,8 @@
 import IFloatButton from '@/components/IFloatButton';
 import {
-  DeleteDoneIcon,
+  DarkIcon,
   EmptyIcon,
+  LightIcon,
   ShrinkOutlined,
   TodoListIcon,
 } from '@/components/icons';
@@ -14,10 +15,14 @@ import {
   MotionBox,
   Title,
 } from '@/components/styleBox';
-import { isBlank } from '@/utils/common';
-import { FullscreenOutlined, PlusSquareTwoTone } from '@ant-design/icons';
+import { isBlank, setCssVar } from '@/utils/common';
+import {
+  DeleteTwoTone,
+  FullscreenOutlined,
+  PlusSquareTwoTone,
+} from '@ant-design/icons';
 import { useDispatch, useSelector } from '@umijs/max';
-import { Button, Divider, Tooltip, message } from 'antd';
+import { Button, Tooltip, message } from 'antd';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -27,7 +32,7 @@ import style from './style.less';
 
 const getTitleStyle = (key) => {
   if (key === 'todo') {
-    return { marginLeft: 0 };
+    return { marginLeft: 0, color: 'var(--card-color)' };
   }
   if (key === 'doing') {
     return { color: '#1677ff' };
@@ -66,6 +71,7 @@ export default function Todo() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [expanded, setExpanded] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
+  const [theme, setTheme] = useState('light');
   const { todoGroup } = useSelector((state) => state.todo);
   const groupTemp = {
     todo: [...(todoGroup['todo'] || [])],
@@ -77,9 +83,7 @@ export default function Todo() {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
-
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -102,6 +106,15 @@ export default function Todo() {
       type: 'todo/saveLocalTodos',
       config: { todoGroup: { done: [] } },
     });
+  };
+
+  const toggleTheme = () => {
+    setTheme(() => (theme === 'light' ? 'dark' : 'light'));
+    //截屏换肤
+
+    //换肤
+    setCssVar('--card-bgc', theme === 'light' ? '#333' : '#fff');
+    setCssVar('--card-color', theme === 'light' ? '#fff' : '#333');
   };
 
   const onDragEnd = (result) => {
@@ -150,19 +163,35 @@ export default function Todo() {
             </FlexRowAuto>
             <div className={style.right}>
               <Button
+                icon={theme === 'light' ? <LightIcon /> : <DarkIcon />}
+                style={{ marginLeft: 12, backgroundColor: 'var(--card-bgc)' }}
+                className={style.themeBtn}
+                onClick={toggleTheme}
+              />
+              <Button
                 icon={<FullscreenOutlined />}
-                style={{ border: 0, marginLeft: 12 }}
+                style={{
+                  border: 0,
+                  marginLeft: 12,
+                  backgroundColor: 'var(--card-bgc)',
+                  color: 'var(--card-color)',
+                }}
                 onClick={() => {
                   setFullScreen(!fullScreen);
                 }}
-              ></Button>
+              />
               <Button
                 icon={<ShrinkOutlined />}
-                style={{ border: 0, marginLeft: 12 }}
+                style={{
+                  border: 0,
+                  marginLeft: 12,
+                  backgroundColor: 'var(--card-bgc)',
+                  color: 'var(--card-color)',
+                }}
                 onClick={() => {
                   setExpanded(false);
                 }}
-              ></Button>
+              />
             </div>
           </div>
           <FlexColumnAuto
@@ -243,9 +272,8 @@ export default function Todo() {
               style={{ flex: 1, justifyContent: 'center' }}
               className={style.todoAction}
             />
-            <Divider type="vertical" />
             <Tooltip key="deleteDone" title="清空已完成">
-              <DeleteDoneIcon
+              <DeleteTwoTone
                 onClick={deleteDone}
                 style={{ flex: 1, justifyContent: 'center' }}
                 className={style.todoAction}
