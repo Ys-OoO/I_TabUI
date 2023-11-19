@@ -15,6 +15,7 @@ import {
   MotionBox,
   Title,
 } from '@/components/styleBox';
+import { crop, toCanvas } from '@/utils/canvasUtils';
 import { isBlank, setCssVar } from '@/utils/common';
 import {
   DeleteTwoTone,
@@ -24,7 +25,7 @@ import {
 import { useDispatch, useSelector } from '@umijs/max';
 import { Button, Tooltip, message } from 'antd';
 import _ from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import AddTodoDrawer from './AddTodoDrawer';
 import TodoItem from './TodoItem';
@@ -72,7 +73,10 @@ export default function Todo() {
   const [expanded, setExpanded] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
   const [theme, setTheme] = useState('light');
+  const parentRef = useRef();
+  const targetRef = useRef();
   const { todoGroup } = useSelector((state) => state.todo);
+
   const groupTemp = {
     todo: [...(todoGroup['todo'] || [])],
     doing: [...(todoGroup['doing'] || [])],
@@ -108,13 +112,27 @@ export default function Todo() {
     });
   };
 
-  const toggleTheme = () => {
-    setTheme(() => (theme === 'light' ? 'dark' : 'light'));
-    //截屏换肤
+  const handleSwitch = (event, theme, fullScreen) => {
+    const todoCanvas = toCanvas(targetRef.current);
+    todoCanvas.then((canvas) => {
+      parentRef.current.appendChild(canvas);
+      setTimeout(() => {
+        crop(canvas, event, { reverse: theme === 'dark' }, fullScreen).then(
+          () => {
+            parentRef.current.removeChild(canvas);
+          },
+        );
+        //换肤
+        setCssVar('--card-bgc', theme === 'light' ? '#333' : '#fff');
+        setCssVar('--card-color', theme === 'light' ? '#fff' : '#333');
+      }, 1);
+    });
+  };
 
-    //换肤
-    setCssVar('--card-bgc', theme === 'light' ? '#333' : '#fff');
-    setCssVar('--card-color', theme === 'light' ? '#fff' : '#333');
+  const toggleTheme = (e) => {
+    //截屏换肤
+    handleSwitch(e, theme, fullScreen);
+    setTheme(() => (theme === 'light' ? 'dark' : 'light'));
   };
 
   const onDragEnd = (result) => {
@@ -143,7 +161,10 @@ export default function Todo() {
   };
 
   return (
-    <MotionBox className={fullScreen ? style.fullScreenBox : style.todoBox}>
+    <MotionBox
+      className={fullScreen ? style.fullScreenBox : style.todoBox}
+      ref={parentRef}
+    >
       {expanded ? (
         <MotionBox
           initial={{ opacity: 0, scale: 0.5 }}
@@ -152,6 +173,7 @@ export default function Todo() {
           key="expandedTodoList"
           className={style.card}
           style={fullScreen ? { height: '100%' } : {}}
+          ref={targetRef}
         >
           <div className={style.cardHeader}>
             <FlexRowAuto className={style.left}>
@@ -167,7 +189,7 @@ export default function Todo() {
                 style={{ marginLeft: 12, backgroundColor: 'var(--card-bgc)' }}
                 className={style.themeBtn}
                 onClick={toggleTheme}
-              />
+              ></Button>
               <Button
                 icon={<FullscreenOutlined />}
                 style={{
