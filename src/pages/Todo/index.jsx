@@ -112,16 +112,14 @@ export default function Todo() {
     });
   };
 
-  const handleSwitch = (event, theme, fullScreen) => {
+  const handleSwitch = (event, theme) => {
     const todoCanvas = toCanvas(targetRef.current);
     todoCanvas.then((canvas) => {
       parentRef.current.appendChild(canvas);
       setTimeout(() => {
-        crop(canvas, event, { reverse: theme === 'dark' }, fullScreen).then(
-          () => {
-            parentRef.current.removeChild(canvas);
-          },
-        );
+        crop(canvas, event, { reverse: theme === 'dark' }).then(() => {
+          parentRef.current.removeChild(canvas);
+        });
         //换肤
         setCssVar('--card-bgc', theme === 'light' ? '#333' : '#fff');
         setCssVar('--card-color', theme === 'light' ? '#fff' : '#333');
@@ -131,7 +129,7 @@ export default function Todo() {
 
   const toggleTheme = (e) => {
     //截屏换肤
-    handleSwitch(e, theme, fullScreen);
+    handleSwitch(e, theme);
     setTheme(() => (theme === 'light' ? 'dark' : 'light'));
   };
 

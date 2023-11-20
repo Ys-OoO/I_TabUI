@@ -45,7 +45,7 @@ export function easeInOutQuart(elapsed, initialValue, amountOfChange, duration) 
   return -amountOfChange / 2 * ((elapsed -= 2) * elapsed * elapsed * elapsed - 2) + initialValue;
 }
 
-function getMousePos(canvas, evt, fullscreen) {
+function getMousePos(canvas, evt) {
   const rect = canvas.getBoundingClientRect();
 
   return {
@@ -58,11 +58,9 @@ function getMaxRadius(canvas) {
   return Math.sqrt(Math.pow(canvas.width, 2) + Math.pow(canvas.height, 2));
 }
 
-export const crop = (canvas, initialPosition, { reverse = false }, fullScreen) => {
+export const crop = (canvas, initialPosition, { reverse = false }) => {
   const ctx = canvas.getContext('2d');
-  console.log(canvas);
-
-  const { x, y } = getMousePos(canvas, initialPosition, fullScreen);
+  const { x, y } = getMousePos(canvas, initialPosition);
 
   const maxRadius = getMaxRadius(canvas);
   return new Promise(resolve => {
