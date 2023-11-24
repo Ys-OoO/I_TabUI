@@ -65,7 +65,7 @@ export const crop = (canvas, initialPosition, { reverse = false }) => {
   const maxRadius = getMaxRadius(canvas);
   return new Promise(resolve => {
     let progress = 0;
-    const duration = 60;
+    const duration = 50;
     ctx.fillStyle = 'rgba(255, 255, 255, 1)';
     ctx.globalCompositeOperation = reverse ? 'destination-in' : 'destination-out';
 

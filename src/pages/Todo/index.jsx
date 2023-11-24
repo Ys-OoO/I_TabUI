@@ -123,7 +123,7 @@ export default function Todo() {
         //换肤
         setCssVar('--card-bgc', theme === 'light' ? '#333' : '#fff');
         setCssVar('--card-color', theme === 'light' ? '#fff' : '#333');
-      }, 1);
+      }, 0);
     });
   };
 
