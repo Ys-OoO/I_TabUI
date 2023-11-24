@@ -272,6 +272,19 @@ const DarkSvg = () => {
   )
 }
 
+const WallpaperSvg = () => {
+  return <svg
+    className="icon"
+    viewBox="0 0 1024 1024"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    width="1em"
+    height="1em"
+  >
+    <path d="M906.752 0H117.248A117.248 117.248 0 0 0 0 117.248v789.504A117.248 117.248 0 0 0 117.248 1024h641.536a51.2 51.2 0 0 0 0-102.4H117.248a14.848 14.848 0 0 1-14.848-14.848V117.248A14.848 14.848 0 0 1 117.248 102.4h789.504a14.848 14.848 0 0 1 14.848 14.848v478.72a51.2 51.2 0 0 0 102.4 0V117.248A117.248 117.248 0 0 0 906.752 0z" fill="#188efc" p-id="17326"></path><path d="M711.68 392.704a51.2 51.2 0 0 0-91.136 6.656L529.408 614.4 437.76 399.36a51.2 51.2 0 0 0-43.008-31.232 51.2 51.2 0 0 0-47.616 23.552L174.592 665.6a51.2 51.2 0 1 0 86.528 54.272l120.832-190.464 102.4 238.08a51.2 51.2 0 0 0 47.104 31.232 51.2 51.2 0 0 0 47.104-31.232l99.328-235.52 73.728 122.368a51.2 51.2 0 0 0 87.552-51.2zM345.6 281.6A64 64 0 1 0 281.6 345.6 64 64 0 0 0 345.6 281.6z m-76.8 0a12.8 12.8 0 0 1 25.6 0c0 14.336-25.6 14.336-25.6 0z" fill="#188efc" p-id="17327"></path>
+  </svg>
+}
+
 const FunctionIcon = (props) => <Icon component={FunctionSvg} {...props} />
 const MoreIcon = (props) => <Icon component={MoreSvg} {...props} />
 const MarkdownIcon = (props) => <Icon component={MarkdownSvg} {...props} />
@@ -289,6 +302,7 @@ const TodoIcon = (props) => <Icon component={TodoSvg} {...props} />
 const GitHubIcon = (props) => <Icon component={GitHubSvg} {...props} />
 const LightIcon = (props) => <Icon component={LightSvg} {...props} />
 const DarkIcon = (props) => <Icon component={DarkSvg} {...props} />
+const WallpaperIcon = (props) => <Icon component={WallpaperSvg} {...props} />
 
 
 
@@ -304,6 +318,6 @@ export {
   FunctionIcon, GitHubIcon, GithubIcon,
   HomeIcon, LightIcon, MarkdownIcon,
   MoreIcon,
-  ShrinkOutlined, TodoIcon, TodoListIcon
+  ShrinkOutlined, TodoIcon, TodoListIcon, WallpaperIcon
 };
 

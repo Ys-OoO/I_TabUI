@@ -1,0 +1,35 @@
+.container{
+  position: relative;
+  overflow: hidden;
+
+  .image{
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 24px);
+    background-color: rgba(0, 0, 0, 50%); /* 半透明黑色遮罩层 */
+    opacity: 0;
+    border-radius: 8px;
+    transition: opacity 0.3s;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-end;
+    align-items: center;
+    color:#eee;
+    user-select: none;
+  }
+  
+  .overlay:hover{
+    opacity: 1;
+    cursor: pointer;
+  }
+}
+

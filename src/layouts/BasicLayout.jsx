@@ -4,6 +4,7 @@ import { DarkIcon, LightIcon } from '@/components/icons';
 import { Flex, FlexColumn } from '@/components/styleBox';
 import { setCssVar } from '@/utils/common';
 import { db } from '@/utils/indexDBUtils/db';
+import { getStorage } from '@/utils/localStorageUtils';
 import { Outlet, useDispatch, useSelector } from '@umijs/max';
 import { ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
@@ -12,9 +13,16 @@ import BasicNavigator from './BasicNavigator';
 export default function BasicLayout() {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
+  const { wallpaper } = useSelector((state) => state.home);
+
+  useEffect(() => {
+    dispatch({
+      type: 'home/change',
+      config: { wallpaper: getStorage('wallpaper', 'object') },
+    });
+  }, []);
   const [themIcon, setThemeIcon] = useState(<LightIcon />);
   useEffect(() => {
-    // TODO 存localStorage 初始化主题样式变量
     setCssVar('--theme-bgc', '#fff');
     setCssVar('--theme-color', '#333');
     setCssVar('--theme-shadow', '#fff');
@@ -74,7 +82,7 @@ export default function BasicLayout() {
             zIndx: 9,
           }}
         />
-        <IBackground />
+        <IBackground videoSource={wallpaper?.videoSrc} src={wallpaper?.src} />
       </FlexColumn>
     </ConfigProvider>
   );

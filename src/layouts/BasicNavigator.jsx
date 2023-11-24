@@ -4,16 +4,16 @@ import {
   FunctionIcon,
   GitHubIcon,
   MoreIcon,
+  WallpaperIcon,
 } from '@/components/icons';
 import { debouncePush } from '@/utils/common';
-import { useDispatch, useLocation } from '@umijs/max';
+import { useDispatch } from '@umijs/max';
 import { FloatButton } from 'antd';
 import _ from 'lodash';
 import { Fragment } from 'react';
 import style from './style.less';
 
 export default function BasicNavigator() {
-  const location = useLocation();
   const dispatch = useDispatch();
   const navigationItems = [
     {
@@ -28,6 +28,19 @@ export default function BasicNavigator() {
       },
       noRoute: true,
       tooltip: '收藏夹',
+    },
+    {
+      icon: <WallpaperIcon />,
+      onClick: () => {
+        dispatch({
+          type: 'home/change',
+          config: {
+            wallpaperVisible: true,
+          },
+        });
+      },
+      noRoute: true,
+      tooltip: '切换壁纸',
     },
   ];
 

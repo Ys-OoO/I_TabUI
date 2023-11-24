@@ -7,6 +7,8 @@ export default {
     currentItem: null,
     //对应收藏夹管理抽屉
     folderManage: false,
+    wallpaperVisible: false,
+    wallpaper: {}
   },
   effects: {
     *change({ config }, { put }) {

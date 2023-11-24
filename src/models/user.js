@@ -2,7 +2,7 @@ export default {
   namespace: 'user',
   state: {
     currentUser: { name: 'guest' },
-    userOptions: {}
+    userOptions: {},
   },
   effects: {
     *change({ payload }, { put }) {

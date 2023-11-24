@@ -9,6 +9,7 @@ import TodoList from '../Todo';
 import EditFavoriteFolderDrawer from './EditFavoriteFolderDrawer/EditFavoriteFolderDrawer';
 import EditFavoriteItemModal from './EditFavoriteItemModal/EditFavoriteItemModal';
 import SearchInput from './SearchInput/SearchInput';
+import WallpaperChangeModal from './WallpaperChangeModal/WallpaperChangeModal';
 import style from './style.less';
 
 const Home = () => {
@@ -55,6 +56,7 @@ const Home = () => {
         {/* 隐藏ModuleCard <Module /> */}
         <EditFavoriteItemModal />
         <EditFavoriteFolderDrawer />
+        <WallpaperChangeModal />
       </FlexColumnAuto>
       <TodoList />
     </>
