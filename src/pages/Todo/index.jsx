@@ -210,6 +210,7 @@ export default function Todo() {
                 }}
                 onClick={() => {
                   setExpanded(false);
+                  setFullScreen(false);
                 }}
               />
             </div>
