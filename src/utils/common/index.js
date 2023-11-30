@@ -62,3 +62,17 @@ export const JSONParse = (value, errorValue = {}, noConsole) => {
 export const setCssVar = (cssVar, value) => {
   document.documentElement.style.setProperty(cssVar, value);
 };
+
+/**
+ * 获取当前访问设备信息
+ * @returns 
+ */
+export const getClientInfo = () => {
+  const ua = window.navigator.userAgent;
+  return {
+    isPC: !/Android|webOS|iPhone|iPod|BlackBerry|SymbianOS|iPad/i.test(ua),
+    isMobile: /Android|webOS|iPhone|iPod|BlackBerry/i.test(ua),
+    isAndroid: /android/i.test(ua),
+    isIos: /iPad|iPhone|iPod/.test(ua),
+  };
+};

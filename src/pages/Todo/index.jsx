@@ -16,7 +16,7 @@ import {
   Title,
 } from '@/components/styleBox';
 import { crop, toCanvas } from '@/utils/canvasUtils';
-import { isBlank, setCssVar } from '@/utils/common';
+import { getClientInfo, isBlank, setCssVar } from '@/utils/common';
 import {
   DeleteTwoTone,
   FullscreenOutlined,
@@ -66,7 +66,7 @@ const move = (listGroup, source, destination) => {
 
   return [sourceTodoList, destTodoList];
 };
-
+const { isPC, isMobile } = getClientInfo();
 export default function Todo() {
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -188,18 +188,20 @@ export default function Todo() {
                 className={style.themeBtn}
                 onClick={toggleTheme}
               ></Button>
-              <Button
-                icon={<FullscreenOutlined />}
-                style={{
-                  border: 0,
-                  marginLeft: 12,
-                  backgroundColor: 'var(--card-bgc)',
-                  color: 'var(--card-color)',
-                }}
-                onClick={() => {
-                  setFullScreen(!fullScreen);
-                }}
-              />
+              {isPC && (
+                <Button
+                  icon={<FullscreenOutlined />}
+                  style={{
+                    border: 0,
+                    marginLeft: 12,
+                    backgroundColor: 'var(--card-bgc)',
+                    color: 'var(--card-color)',
+                  }}
+                  onClick={() => {
+                    setFullScreen(!fullScreen);
+                  }}
+                />
+              )}
               <Button
                 icon={<ShrinkOutlined />}
                 style={{
@@ -306,11 +308,14 @@ export default function Todo() {
       ) : (
         <IFloatButton
           onClick={() => {
-            if (windowWidth <= 1400) {
+            if (windowWidth <= 1400 && isPC) {
               message.info('浏览器视窗过小，请调整');
               return;
             }
             setExpanded(true);
+            if (isMobile) {
+              setFullScreen(true);
+            }
           }}
           icon={<TodoListIcon />}
           style={{ top: 16, right: 24 }}

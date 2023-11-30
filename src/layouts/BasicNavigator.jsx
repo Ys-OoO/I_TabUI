@@ -6,13 +6,15 @@ import {
   MoreIcon,
   WallpaperIcon,
 } from '@/components/icons';
-import { debouncePush } from '@/utils/common';
+import { debouncePush, getClientInfo } from '@/utils/common';
+import { BookTwoTone } from '@ant-design/icons';
 import { useDispatch } from '@umijs/max';
 import { FloatButton } from 'antd';
 import _ from 'lodash';
 import { Fragment } from 'react';
 import style from './style.less';
 
+const { isPc, isMobile } = getClientInfo();
 export default function BasicNavigator() {
   const dispatch = useDispatch();
   const navigationItems = [
@@ -28,6 +30,19 @@ export default function BasicNavigator() {
       },
       noRoute: true,
       tooltip: '收藏夹',
+    },
+    {
+      icon: <BookTwoTone />,
+      onClick: () => {
+        dispatch({
+          type: 'home/change',
+          config: {
+            editVisible: true,
+          },
+        });
+      },
+      noRoute: true,
+      tooltip: '添加收藏项',
     },
     {
       icon: <WallpaperIcon />,
@@ -79,7 +94,7 @@ export default function BasicNavigator() {
           }}
         />
         <FloatButton.Group
-          trigger="hover"
+          trigger="click"
           closeIcon={<MoreIcon />}
           icon={<FunctionIcon />}
         >

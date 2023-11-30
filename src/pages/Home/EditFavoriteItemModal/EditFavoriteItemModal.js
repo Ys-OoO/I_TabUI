@@ -4,7 +4,6 @@ import { EditTwoTone, PlusSquareTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from '@umijs/max';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { useLiveQuery } from 'dexie-react-hooks';
-import _ from 'lodash';
 import { useEffect } from 'react';
 
 
@@ -43,17 +42,6 @@ export default function EditFavoriteItemModal() {
     onCancel();
   }
 
-  const addressValidator = (_, value) => {
-    if (!value) {
-      return Promise.reject("请填写地址");
-    }
-    const regUrl = /^(https?|ftp):\/\/(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\S+)?$/;
-    if (regUrl.test(value.trim())) {
-      return Promise.resolve();
-    }
-    return Promise.reject("地址有误");
-  }
-
   const onCancel = () => {
     disptch({ type: 'home/save', config: { editVisible: false, currentItem: null } })
     form.resetFields();
@@ -61,10 +49,14 @@ export default function EditFavoriteItemModal() {
 
   const onChange = _.debounce((e) => {
     const address = e.target.value;
-    changeCover(address);
-  }, 300)
+    let url = address
+    if (!url.startsWith("http://") && !address.startsWith("https://")) {
+      url = "https://" + url;
+    }
+    changeCover(url);
+  }, 300);
 
-  const changeCover = async (address) => {
+  const changeCover = async (url) => {
     //目前该接口直接返回favico，为此我们模拟获取到了Url
     // const result = await addressValidator(null, address)
     //   .then(() => {
@@ -79,7 +71,18 @@ export default function EditFavoriteItemModal() {
     //     console.log(err);
     //     message.info("获取失败,请检查地址或使用Text图标");
     //   });
-    form.setFieldValue('cover', { src: `https://api.7585.net.cn/getico/api.php?url=${address}` })
+    form.setFieldValue('cover', { src: `https://api.7585.net.cn/getico/api.php?url=${url}` })
+  }
+
+  const addressValidator = (_, value) => {
+    if (!value) {
+      return Promise.reject("请填写地址");
+    }
+    const regUrl = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9.-]+[a-zA-Z0-9.-]+(\.[a-zA-Z]{2,})?([/a-zA-Z0-9._%+-]*)*$ /;
+    if (regUrl.test(value.trim())) {
+      return Promise.resolve();
+    }
+    return Promise.reject("地址有误");
   }
 
   return (
